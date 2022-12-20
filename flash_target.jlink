@@ -1,0 +1,7 @@
+si SWD
+speed 4000
+connect
+r
+loadfile output/GNC0200A.hex
+g
+exit

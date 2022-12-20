@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}\\output\\GNC0200A.elf",
+            "name": "Debug (J-Link)",
+            "device": "ATSAMD21J17D",
+            "interface": "swd",
+            "serverArgs": []
+            // "preLaunchTask": "Compile",
+            // "showDevDebugOutput": "raw"
+        },
+        {
+            "type": "cortex-debug",
+            "request": "attach",
+            "servertype": "jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}\\output\\GNC0200A.elf",
+            "name": "Attach (J-Link)",
+            "device": "ATSAMD21J17D",
+            "interface": "swd",
+            "serverArgs": []
+            // "showDevDebugOutput": "raw"
+        }
+    ]
+}

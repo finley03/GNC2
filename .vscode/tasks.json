@@ -1,0 +1,42 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Create Build Files",
+            "type": "shell",
+            "command": "\"\"C:\\Program Files\\CMake\\bin\\cmake.exe\" ./ -GNinja -DCMAKE_MAKE_PROGRAM=${workspaceFolder}\\toolchain\\ninja\\ninja.exe\"",
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile",
+            "type": "shell",
+            "command": "\"\"C:\\Program Files\\CMake\\bin\\cmake.exe\" --build .\"",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": ["Generate Global Variable Header"]
+        },
+        {
+            "label": "Run Without Debugging",
+            "type": "shell",
+            "command": "\"\"C:\\Program Files\\SEGGER\\JLink\\JLink.exe\" -Device ATSAMD21J17 -CommandFile flash_target.jlink\"",
+            "problemMatcher": []
+        },
+        {
+            "label": "Reset Target",
+            "type": "shell",
+            "command": "\"\"C:\\Program Files\\SEGGER\\JLink\\JLink.exe\" -Device ATSAMD21J17 -CommandFile reset_target.jlink\"",
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate Global Variable Header",
+            "type": "shell",
+            "command": "python source/global_variable_generator.py",
+            "problemMatcher": []
+        }
+    ]
+}

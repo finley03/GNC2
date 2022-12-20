@@ -1,0 +1,31 @@
+{
+    "env" : {
+        "commonIncludePath": [
+            "${workspaceFolder}\\lib\\CMSIS_5\\CMSIS\\Core\\Include\\**",
+            "${workspaceFolder}\\toolchain\\arm-none-eabi-gcc\\arm-none-eabi\\include\\**",
+            "${workspaceFolder}\\source"
+        ],
+        "commonCompilerPath": "${workspaceFolder}\\toolchain\\arm-none-eabi-gcc\\bin\\arm-none-eabi-gcc.exe"
+    },
+    "configurations": [
+        {
+            "name": "GNC2.0A",
+            "intelliSenseMode": "gcc-arm",
+            "includePath": [
+                "${commonIncludePath}",
+                "${workspaceFolder}\\lib\\SAMD21_DFP\\samd21d\\include\\**"
+            ],
+            "defines": [
+                "__SAMD21J17D__",
+                "__ATSAMD21J17D__",
+                "__GNC0200__", // GNC2.0
+                "HARDWARE_DEFINITION=\"Hardware/GNC0200A.h\"",
+                "DEBUG"
+            ],
+            "compilerPath": "${commonCompilerPath}",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

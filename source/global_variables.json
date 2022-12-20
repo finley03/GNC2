@@ -1,0 +1,98 @@
+{
+    "i64": [
+
+    ],
+    "u64": [
+
+    ],
+    "f64": [
+        
+    ],
+    "i32": [
+        {
+            "verbose-name": "Power Cycles",
+            "name": "StartupCount"
+        }
+    ],
+    "u32": [
+
+    ],
+    "f32": [
+        {
+            "verbose-name": "Raw X Direction Acceleration",
+            "name": "AccelerationXRaw"
+        },
+        {
+            "verbose-name": "Raw Y Direction Acceleration",
+            "name": "AccelerationYRaw"
+        },
+        {
+            "verbose-name": "Raw Z Direction Acceleration",
+            "name": "AccelerationZRaw"
+        },
+        {
+            "verbose-name": "Raw X Axis Angular Velocity",
+            "name": "AngularVelocityXRaw"
+        },
+        {
+            "verbose-name": "Raw Y Axis Angular Velocity",
+            "name": "AngularVelocityYRaw"
+        },
+        {
+            "verbose-name": "Raw X Axis Angular Velocity",
+            "name": "AngularVelocityZRaw"
+        },
+        {
+            "verbose-name": "Calibrated X Direction Acceleration",
+            "name": "AccelerationXCalibrated"
+        },
+        {
+            "verbose-name": "Calibrated Y Direction Acceleration",
+            "name": "AccelerationYCalibrated"
+        },
+        {
+            "verbose-name": "Calibrated Z Direction Acceleration",
+            "name": "AccelerationZCalibrated"
+        },
+        {
+            "verbose-name": "Calibrated X Axis Angular Velocity",
+            "name": "AngularVelocityXCalibrated"
+        },
+        {
+            "verbose-name": "Calibrated Y Axis Angular Velocity",
+            "name": "AngularVelocityYCalibrated"
+        },
+        {
+            "verbose-name": "Calibrated X Axis Angular Velocity",
+            "name": "AngularVelocityZCalibrated"
+        }
+    ],
+    "i16": [
+
+    ],
+    "u16": [
+
+    ],
+    "i8": [
+
+    ],
+    "u8": [
+
+    ],
+    "bool": [
+        {
+            "verbose-name": "Test Bool",
+            "name": "boolTest"
+        }
+    ],
+    "bool-packed": [
+        {
+            "verbose-name": "Test Bool",
+            "name": "boolTest2"
+        },
+        {
+            "verbose-name": "Test Bool",
+            "name": "boolTest3"
+        }
+    ]
+}

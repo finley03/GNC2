@@ -8,68 +8,106 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+typedef enum {
+    {%- for variableType in variableTypes %}
+    __{{ variableType|upper }},
+    {%- endfor %}
+} __Global_Variable_Types;
+
 typedef struct __attribute__((packed, aligned(8))) {
     {%- for variable in variableTypes["i64"] %}
-    int64_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    int64_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["u64"] %}
-    uint64_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    uint64_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["f64"] %}
-    double {{ variable.name }}; // {{ variable["verbose-name"] }}
+    double {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["i32"] %}
-    int32_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    int32_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
     
     {%- for variable in variableTypes["u32"] %}
-    uint32_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    uint32_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["f32"] %}
-    float {{ variable.name }}; // {{ variable["verbose-name"] }}
+    float {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["i16"] %}
-    int16_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    int16_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["u16"] %}
-    uint16_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    uint16_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["i8"] %}
-    int8_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    int8_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["u8"] %}
-    uint8_t {{ variable.name }}; // {{ variable["verbose-name"] }}
+    uint8_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["bool"] %}
-    bool {{ variable.name }}; // {{ variable["verbose-name"] }}
+    bool {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
-    {%- for variable in variableTypes["bool-packed"] %}
-    bool {{ variable.name }} :1; // {{ variable["verbose-name"] }}
+    {%- for variable in variableTypes["bool_packed"] %}
+    bool {{ variable.name }} :1; // {{ variable["verbose_name"] }}
     {%- endfor %}
 } Global_Variables;
+{% for variableType in variableTypes %}
+#define __GLOBAL_{{ variableType|upper }}_COUNT {{ variableTypes[variableType]|length }}
+{%- endfor %}
 
-#define __GLOBAL_I64_COUNT {{ variableTypes["i64"]|length }}
-#define __GLOBAL_U64_COUNT {{ variableTypes["u64"]|length }}
-#define __GLOBAL_F64_COUNT {{ variableTypes["f64"]|length }}
-#define __GLOBAL_I32_COUNT {{ variableTypes["i32"]|length }}
-#define __GLOBAL_U32_COUNT {{ variableTypes["u32"]|length }}
-#define __GLOBAL_F32_COUNT {{ variableTypes["f32"]|length }}
-#define __GLOBAL_I16_COUNT {{ variableTypes["i16"]|length }}
-#define __GLOBAL_U16_COUNT {{ variableTypes["u16"]|length }}
-#define __GLOBAL_I8_COUNT {{ variableTypes["i8"]|length }}
-#define __GLOBAL_U8_COUNT {{ variableTypes["u8"]|length }}
-#define __GLOBAL_BOOL_COUNT {{ variableTypes["bool"]|length }}
-#define __GLOBAL_BOOL_PACKED_COUNT {{ variableTypes["bool-packed"]|length }}
+typedef enum {
+    Global_ID_INVALID,
+    {%- for variableType in variableTypes %}
+    {%- for variable in variableTypes[variableType] %}
+    Global_ID_{{ variable.name }},
+    {%- endfor %}
+    {%- endfor %}
+} Global_Variable_IDs;
+
+{% set count = 1 -%}
+#define __GLOBAL_ID_START {{ count }}
+#define __GLOBAL_I64_ID_START {{ count }}
+#define __GLOBAL_I64_ID_END {% set count = count + variableTypes["i64"]|length %}{{ count }}
+#define __GLOBAL_U64_ID_START {{ count }}
+#define __GLOBAL_U64_ID_END {% set count = count + variableTypes["u64"]|length %}{{ count }}
+#define __GLOBAL_F64_ID_START {{ count }}
+#define __GLOBAL_F64_ID_END {% set count = count + variableTypes["f64"]|length %}{{ count }}
+#define __GLOBAL_I32_ID_START {{ count }}
+#define __GLOBAL_I32_ID_END {% set count = count + variableTypes["i32"]|length %}{{ count }}
+#define __GLOBAL_U32_ID_START {{ count }}
+#define __GLOBAL_U32_ID_END {% set count = count + variableTypes["u32"]|length %}{{ count }}
+#define __GLOBAL_F32_ID_START {{ count }}
+#define __GLOBAL_F32_ID_END {% set count = count + variableTypes["f32"]|length %}{{ count }}
+#define __GLOBAL_I16_ID_START {{ count }}
+#define __GLOBAL_I16_ID_END {% set count = count + variableTypes["i16"]|length %}{{ count }}
+#define __GLOBAL_U16_ID_START {{ count }}
+#define __GLOBAL_U16_ID_END {% set count = count + variableTypes["u16"]|length %}{{ count }}
+#define __GLOBAL_I8_ID_START {{ count }}
+#define __GLOBAL_I8_ID_END {% set count = count + variableTypes["i8"]|length %}{{ count }}
+#define __GLOBAL_U8_ID_START {{ count }}
+#define __GLOBAL_U8_ID_END {% set count = count + variableTypes["u8"]|length %}{{ count }}
+#define __GLOBAL_BOOL_ID_START {{ count }}
+#define __GLOBAL_BOOL_ID_END {% set count = count + variableTypes["bool"]|length %}{{ count }}
+#define __GLOBAL_BOOL_PACKED_ID_START {{ count }}
+#define __GLOBAL_BOOL_PACKED_ID_END {% set count = count + variableTypes["bool-packed"]|length %}{{ count }}
+#define __GLOBAL_ID_END {{ count }}
+{% for variableType in variableTypes %}
+{%- if variableTypes[variableType]|length %}
+#define __GLOBAL_{{ variableType|upper }}_START_VARIABLE {{ variableTypes[variableType][0].name }}
+{%- endif %}
+{%- endfor %}
 
 // CRC32 of the source JSON used to create this file
 // Used to identify when the globals structure changes

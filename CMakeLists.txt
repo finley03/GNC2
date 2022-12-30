@@ -62,6 +62,7 @@ set(GNC2_SOURCE_FILES
     # source/RTOS/Drivers/usb/usb_serial.c
     # source/RTOS/Drivers/usb/usb.c
 
+    source/comms.c
     source/globals.c
     source/global_eeprom.c
     source/global_imu.c
@@ -102,6 +103,8 @@ set(GNC2_SOURCE_FILES
     source/RTOSDrivers/rtos_dma.c
     source/RTOSDrivers/rtos_uart.c
     source/RTOSDrivers/rtos_usb.c
+
+    C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source/gnclink.c
 )
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
@@ -126,6 +129,7 @@ target_include_directories(${EXECUTABLE} PRIVATE
     lib/SAMD21_DFP/samd21d/include
     lib/SAMD21_DFP/samd21d/include/component
     lib/SAMD21_DFP/samd21d/include/instance
+    C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source
 )
 
 target_compile_options(${EXECUTABLE} PRIVATE

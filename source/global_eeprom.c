@@ -9,6 +9,8 @@ bool init_eeprom() {
 
     Pin eeprom_ss = {.port = EEPROM_SS_PORT, .pin = EEPROM_SS_PIN};
 	eeprom_init(&eeprom_desc, SPI_SERCOM, eeprom_ss, SPI_EEPROM_SIZE);
+
+    return true;
 }
 
 bool check_eeprom() {

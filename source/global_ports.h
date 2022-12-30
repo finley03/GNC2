@@ -22,4 +22,6 @@ bool serial_write_wait_until_complete(Serial_Port_IDs port);
 bool serial_read_start(Serial_Port_IDs port, uint8_t* buffer, int count);
 bool serial_read_wait_until_complete(Serial_Port_IDs port);
 
+bool serial_flush(Serial_Port_IDs port);
+
 #endif

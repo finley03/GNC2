@@ -36,10 +36,31 @@
         "global_imu.h": "c",
         "rtos_usb.h": "c",
         "global_ports.h": "c",
-        "random": "c"
+        "random": "c",
+        "chrono": "c",
+        "rope": "c",
+        "variant": "c",
+        "array": "c",
+        "bitset": "c",
+        "string_view": "c",
+        "slist": "c",
+        "initializer_list": "c",
+        "ranges": "c",
+        "span": "c",
+        "stacktrace": "c",
+        "regex": "c",
+        "valarray": "c",
+        "coroutine": "c",
+        "string.h": "c",
+        "global_eeprom.h": "c",
+        "navigation.h": "c",
+        "gnclink.h": "c",
+        "rtos_uart.h": "c",
+        "gnclink_standard.h": "c"
     },
     "cmake.configureOnOpen": true,
 
     "cortex-debug.gdbPath": "${workspaceFolder}\\toolchain\\arm-none-eabi-gcc\\bin\\arm-none-eabi-gdb.exe",
-    "cortex-debug.JLinkGDBServerPath": "C:\\Program Files\\SEGGER\\JLink\\JLinkGDBServerCL.exe"
+    "cortex-debug.JLinkGDBServerPath": "C:\\Program Files\\SEGGER\\JLink\\JLinkGDBServerCL.exe",
+    "cortex-debug.variableUseNaturalFormat": false
 }

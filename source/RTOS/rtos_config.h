@@ -19,7 +19,7 @@
 #define RTOS_STACK_ALLOC 0x300
 
 // ram allocated to the main function
-#define MAIN_STACK_ALLOC 0x300
+#define MAIN_STACK_ALLOC 0x400
 
 // enable preemptive multitasking
 #define RTOS_PREEMPT

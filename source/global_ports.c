@@ -1,6 +1,7 @@
 #include "global_ports.h"
 #include "RTOSDrivers/rtos_usb.h"
 #include "RTOSDrivers/rtos_uart.h"
+#include "Drivers/uart.h"
 #include "util.h"
 
 
@@ -62,9 +63,6 @@ bool serial_quit() {
 
 
 bool serial_write_start(Serial_Port_IDs port, uint8_t* buffer, int count) {
-    // check port is valid
-    if (port >= __PORT_ID_END) return false;
-
     switch (port) {
         case PORT0:
         rtos_usb_start_send_buffer(buffer, count);
@@ -85,15 +83,16 @@ bool serial_write_start(Serial_Port_IDs port, uint8_t* buffer, int count) {
         case PORT4:
         rtos_uart_start_send_buffer(UART4_SERCOM, &uart4_descriptor, buffer, count);
         break;
+
+        default:
+        return false;
+        break;
     }
 
     return true;
 }
 
 bool serial_write_wait_until_complete(Serial_Port_IDs port) {
-    // check port is valid
-    if (port >= __PORT_ID_END) return false;
-
     switch (port) {
         case PORT0:
         rtos_usb_wait_until_send_complete();
@@ -114,6 +113,10 @@ bool serial_write_wait_until_complete(Serial_Port_IDs port) {
         case PORT4:
         rtos_uart_wait_until_send_complete(&uart4_descriptor);
         break;
+
+        default:
+        return false;
+        break;
     }
 
     return true;
@@ -121,9 +124,6 @@ bool serial_write_wait_until_complete(Serial_Port_IDs port) {
 
 
 bool serial_read_start(Serial_Port_IDs port, uint8_t* buffer, int count) {
-    // check port is valid
-    if (port >= __PORT_ID_END) return false;
-
     switch (port) {
         case PORT0:
         rtos_usb_start_read_buffer(buffer, count);
@@ -144,15 +144,16 @@ bool serial_read_start(Serial_Port_IDs port, uint8_t* buffer, int count) {
         case PORT4:
         rtos_uart_start_read_buffer(UART4_SERCOM, &uart4_descriptor, buffer, count);
         break;
+
+        default:
+        return false;
+        break;
     }
 
     return true;
 }
 
 bool serial_read_wait_until_complete(Serial_Port_IDs port) {
-    // check port is valid
-    if (port >= __PORT_ID_END) return false;
-
     switch (port) {
         case PORT0:
         rtos_usb_wait_until_read_complete();
@@ -172,6 +173,39 @@ bool serial_read_wait_until_complete(Serial_Port_IDs port) {
 
         case PORT4:
         rtos_uart_wait_until_read_complete(&uart4_descriptor);
+        break;
+
+        default:
+        return false;
+        break;
+    }
+
+    return true;
+}
+
+bool serial_flush(Serial_Port_IDs port) {
+    switch (port) {
+        case PORT0:
+        break;
+
+        case PORT1:
+        uart_flush(UART1_SERCOM);
+        break;
+
+        case PORT2:
+        uart_flush(UART2_SERCOM);
+        break;
+        
+        case PORT3:
+        uart_flush(UART3_SERCOM);
+        break;
+
+        case PORT4:
+        uart_flush(UART4_SERCOM);
+        break;
+
+        default:
+        return false;
         break;
     }
 

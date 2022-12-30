@@ -9,50 +9,42 @@
 #include "global_ports.h"
 #include "global_eeprom.h"
 #include "navigation.h"
-#include TIME_DRIVER
+#include "comms.h"
+
+Process bz;
+int bz_count;
 
 bool init();
 void shutdown();
 void buzzer();
 
-uint8_t usbbuffer[128];
-const char lipsum[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus dapibus nisi, nec erat curae.";
+// uint8_t usbbuffer[128];
+// const char lipsum[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus dapibus nisi, nec erat curae.";
+// uint8_t packet[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
+// uint8_t frame[GNCLINK_FRAME_TOTAL_LENGTH];
 
 int main(void) {
 	if (!init()) SOS();
 	
-	Process bz;
 	init_process(&bz, buzzer, BUZZER_STACK_BASE, BUZZER_STACK_SIZE);
+	bz_count = 2;
 	dispatch_process(&bz);
 
 	start_navigation();
 
-	// for (int i = 0; i < 64; ++i) {
-	// 	EEPROM_Request r;
-	// 	eeprom_write_request(&r, i, &i, 1);
-	// 	eeprom_wait_until_done(&r);
-	// }
+	// uint8_t* payload = GNClink_Get_Payload_Pointer(packet);
+	// const char* test = "Hello";
+	// memcpy(payload, test, 5);
+	// GNClink_Construct_Packet(packet, GNClink_PacketType_Acknowledge, GNClink_PacketFlags_NoResponse, 5);
+	// bool moreFrames;
+	// GNClink_Get_Frame(packet, frame, GNClink_FrameFlags_NoResponse, 0, &moreFrames);
 
-	uint32_t time = time_read_ticks();
-	for (int i = 0; i < 256; ++i) {
-		uint8_t ff = 0xFF;
-		EEPROM_Request r;
-		uint8_t value = 0;
-		eeprom_read_request(&r, i, &value, 1);
-		eeprom_wait_until_done(&r);
-		if (value != 0xFF) {
-			EEPROM_Request r2;
-			eeprom_write_request(&r2, i, &ff, 1);
-			eeprom_wait_until_done(&r2);
-		}
-	}
-	time = time_read_ticks() - time;
-	volatile uint32_t timeus = TIME_US_MULT * time;
+	// rtos_delay_s(5);
 
+	// serial_write_start(PORT0, frame, GNCLINK_FRAME_TOTAL_LENGTH);
+	// serial_write_wait_until_complete(PORT0);
 
-	EEPROM_Request read_request;
-	eeprom_read_request(&read_request, 0, usbbuffer, ARRLEN(usbbuffer));
-	eeprom_wait_until_done(&read_request);
+	comms_loop();
 
 	while (1) {
 		rtos_delay_ms(1);
@@ -135,6 +127,7 @@ bool init() {
 	// busmanager_new_process(&spiproc, SPIMGR_STACK_BASE, SPIMGR_STACK_SIZE, SPI_SERCOM, &dma_spi_desc, spi_process_exec_function);
 	busmanager_new_process(&spiproc, SPIMGR_STACK_BASE, SPIMGR_STACK_SIZE, SPI_SERCOM, &dma_spi_desc);
 	
+	init_globals();
 	
 	return selftest();
 }
@@ -151,10 +144,12 @@ void buzzer() {
 	
 	port_wrconfig(PORT_PORTB, PORT_PMUX_E, PORT_PB23);
 	
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < bz_count; ++i) {
 		pwm_set_duty_tc(TC7_REGS, 1, 0.5f);
+		led_on();
 		rtos_delay_ms(75);
 		pwm_set_duty_tc(TC7_REGS, 1, 0.0f);
+		led_off();
 		rtos_delay_ms(75);
 	}
 }

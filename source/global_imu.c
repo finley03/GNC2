@@ -13,7 +13,7 @@
 #define GYRO_FS_SEL_LOW_THRESHOLD (0.4f * GYRO_RAW_RANGE)
 #define GYRO_FS_SEL_MIN 0
 #define GYRO_FS_SEL_MAX 3
-#define GYRO_MIN_RANGE_DEGREES 250
+#define GYRO_MIN_RANGE_MICRORADIANS 4363323
 
 IMU_ICM20948_Descriptor imu_desc;
 IMU_Request data_request, accel_range_request, gyro_range_request;
@@ -61,15 +61,17 @@ void request_imu_data() {
 void wait_for_imu_data() {
     imu_icm20948_wait_until_done(&data_request);
 
-    float accel_multiplier = __G__ * (ACCEL_MIN_RANGE_G << accel_fs_sel) / ACCEL_RAW_RANGE;
-    globals.AccelerationXRaw = (float)(SWAPI16(raw_data.accel_x)) * accel_multiplier;
-    globals.AccelerationYRaw = (float)(SWAPI16(raw_data.accel_y)) * accel_multiplier;
-    globals.AccelerationZRaw = (float)(SWAPI16(raw_data.accel_z)) * accel_multiplier;
+    // float accel_multiplier = __G__ * (ACCEL_MIN_RANGE_G << accel_fs_sel) / ACCEL_RAW_RANGE;
+    int32_t accel_multiplier = (__G__ * ACCEL_MIN_RANGE_G) >> (15 - accel_fs_sel);
+    globals.AccelerationXRaw = SWAPI16(raw_data.accel_x) * accel_multiplier;
+    globals.AccelerationYRaw = SWAPI16(raw_data.accel_y) * accel_multiplier;
+    globals.AccelerationZRaw = SWAPI16(raw_data.accel_z) * accel_multiplier;
 
-    float gyro_multiplier = (float)(GYRO_MIN_RANGE_DEGREES << gyro_fs_sel) / GYRO_RAW_RANGE;
-    globals.AngularVelocityXRaw = (float)(SWAPI16(raw_data.gyro_x)) * gyro_multiplier;
-    globals.AngularVelocityYRaw = (float)(SWAPI16(raw_data.gyro_y)) * gyro_multiplier;
-    globals.AngularVelocityZRaw = (float)(SWAPI16(raw_data.gyro_z)) * gyro_multiplier;
+    // float gyro_multiplier = (float)(GYRO_MIN_RANGE_DEGREES << gyro_fs_sel) / GYRO_RAW_RANGE;
+    int32_t gyro_multiplier = (GYRO_MIN_RANGE_MICRORADIANS) >> (15 - gyro_fs_sel);
+    globals.AngularVelocityXRaw = SWAPI16(raw_data.gyro_x) * gyro_multiplier;
+    globals.AngularVelocityYRaw = SWAPI16(raw_data.gyro_y)* gyro_multiplier;
+    globals.AngularVelocityZRaw = SWAPI16(raw_data.gyro_z) * gyro_multiplier;
 
     // adjust accelerometer range
     int16_t accel_max = UMAX_3(SWAPI16(raw_data.accel_x), SWAPI16(raw_data.accel_y), SWAPI16(raw_data.accel_z));

@@ -27,41 +27,6 @@ set(GNC2_SOURCE_FILES
     lib/SAMD21_DFP/samd21d/gcc/system_samd21j17d.c
     lib/SAMD21_DFP/samd21d/gcc/gcc/startup_samd21j17d.c
 
-    # source/bus_manager.c
-    # source/dma_baro_ms56.c
-    # source/dma_eeprom_cat25.c
-    # source/dma_flash_at25.c
-    # source/dma_imu_icm20948.c
-    # source/dma_spi.c
-    # source/main.c
-    # source/util.c
-    # source/globals.c
-
-    # source/RTOS/rtos_dma.c
-    # source/RTOS/rtos_main.c
-    # source/RTOS/rtos_preemption.c
-    # source/RTOS/rtos_process.c
-    # source/RTOS/rtos_time.c
-    # source/RTOS/rtos_usb.c
-    # source/RTOS/rtos_util.c
-
-    # source/RTOS/Drivers/baro_ms56.c
-    # source/RTOS/Drivers/dma.c
-    # source/RTOS/Drivers/eeprom_cat25.c
-    # source/RTOS/Drivers/flash_at25.c
-    # source/RTOS/Drivers/imu_icm20948.c
-    # source/RTOS/Drivers/port.c
-    # source/RTOS/Drivers/pwm.c
-    # source/RTOS/Drivers/sercom.c
-    # source/RTOS/Drivers/spi.c
-    # source/RTOS/Drivers/time.c
-    # source/RTOS/Drivers/uart.c
-
-    # source/RTOS/Drivers/usb/usb_requests.c
-    # source/RTOS/Drivers/usb/usb_samd.c
-    # source/RTOS/Drivers/usb/usb_serial.c
-    # source/RTOS/Drivers/usb/usb.c
-
     source/comms.c
     source/globals.c
     source/global_eeprom.c
@@ -105,6 +70,7 @@ set(GNC2_SOURCE_FILES
     source/RTOSDrivers/rtos_usb.c
 
     C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source/gnclink.c
+    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include/source/fixedpoint.c
 )
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
@@ -130,6 +96,8 @@ target_include_directories(${EXECUTABLE} PRIVATE
     lib/SAMD21_DFP/samd21d/include/component
     lib/SAMD21_DFP/samd21d/include/instance
     C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source
+    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include
+    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include/source
 )
 
 target_compile_options(${EXECUTABLE} PRIVATE

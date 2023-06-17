@@ -13,13 +13,11 @@ uint8_t rxframe[GNCLINK_FRAME_TOTAL_LENGTH];
 uint8_t txframe[GNCLINK_FRAME_TOTAL_LENGTH];
 
 extern void SOS();
-extern Process bz;
-extern int bz_count;
 
 bool getGlobalHash() {
     uint32_t* payload = (uint32_t*)GNClink_Get_Packet_Payload_Pointer(txpacket);
     *payload = __GLOBAL_HASH;
-    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetGlobalHashResponse, GNClink_PacketFlags_None, 4)) return false;
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetGlobalHash, GNClink_PacketFlags_Response, 4)) return false;
     return true;
 }
 
@@ -56,7 +54,33 @@ bool getValueList() {
     }
 
     // construct packet
-    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetValueListResponse, GNClink_PacketFlags_None, payloadIndex)) return false;
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetValueList, GNClink_PacketFlags_Response, payloadIndex)) return false;
+    return true;
+}
+
+bool getValueCount() {
+    uint16_t* payload = (uint32_t*)GNClink_Get_Packet_Payload_Pointer(txpacket);
+    *payload = __GLOBAL_ID_END - __GLOBAL_ID_START;
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetValueCount, GNClink_PacketFlags_Response, 2)) return false;
+    return true;
+}
+
+bool getValueName() {
+    uint16_t* rxpayload = (uint16_t*)GNClink_Get_Packet_Payload_Pointer(rxpacket);
+    uint8_t* txpayload = GNClink_Get_Packet_Payload_Pointer(txpacket);
+
+    // get variable ID
+    uint16_t id = *rxpayload;
+
+    int length = 0;
+
+    __Global_Variable_Types type;
+    if (!get_global_type_from_id(id, &type)) return false;
+    *txpayload = (uint8_t*)type;
+
+    if (!get_global_name(id, txpayload + 1, &length, GNCLINK_PACKET_MAX_PAYLOAD_LENGTH - 1)) return false;
+
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetValueName, GNClink_PacketFlags_Response, length + 1)) return false;
     return true;
 }
 
@@ -73,12 +97,22 @@ bool evaluatePacket() {
     // bz_count = (int)(*GNClink_Get_Packet_Payload_Pointer(rxpacket));
     // dispatch_process(&bz);
 
+    // check packet is not response packet
+    GNClink_PacketFlags flags = GNClink_Get_Packet_Flags(rxpacket);
+    if (flags & GNClink_PacketFlags_Response) return false;
+
     switch (GNClink_Get_Packet_Type(rxpacket)) {
         case GNClink_PacketType_GetGlobalHash:
         return getGlobalHash();
 
         case GNClink_PacketType_GetValueList:
         return getValueList();
+
+        case GNClink_PacketType_GetValueCount:
+        return getValueCount();
+
+        case GNClink_PacketType_GetValueName:
+        return getValueName();
 
         default:
         return false;
@@ -131,8 +165,10 @@ bool get_packet() {
                 GNClink_Construct_RequestResendFrame(txframe);
 
                 // send frame
+                led_on();
                 serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
                 serial_write_wait_until_complete(PORT0);
+                led_off();
             }
             // packet fully received
             else break;
@@ -160,8 +196,10 @@ bool send_packet(bool resendFrames) {
         GNClink_Get_Frame(txpacket, txframe, frameFlags, frameIndex, &moreFrames);
 
         // send frame
+        led_on();
         serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
         serial_write_wait_until_complete(PORT0);
+        led_off();
 
         ++count;
     }

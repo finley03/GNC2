@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <fixedpoint.h>
+
 typedef enum {
     {%- for variableType in variableTypes %}
     __{{ variableType|upper }},
@@ -33,6 +35,10 @@ typedef struct __attribute__((packed, aligned(8))) {
     
     {%- for variable in variableTypes["u32"] %}
     uint32_t {{ variable.name }}; // {{ variable["verbose_name"] }}
+    {%- endfor %}
+
+    {%- for variable in variableTypes["fp32"] %}
+    fp32_t {{ variable.name }}; // {{ variable["verbose_name"] }}
     {%- endfor %}
 
     {%- for variable in variableTypes["f32"] %}
@@ -76,6 +82,15 @@ typedef enum {
     {%- endfor %}
 } Global_Variable_IDs;
 
+#define __GLOBAL_VARIABLE_NAMES {\
+    "INVALID",\
+    {%- for variableType in variableTypes %}
+    {%- for variable in variableTypes[variableType] %}
+    "{{ variable["verbose_name"] }}",\
+    {%- endfor %}
+    {%- endfor %}
+};
+
 {% set count = 1 -%}
 #define __GLOBAL_ID_START {{ count }}
 #define __GLOBAL_I64_ID_START {{ count }}
@@ -88,6 +103,8 @@ typedef enum {
 #define __GLOBAL_I32_ID_END {% set count = count + variableTypes["i32"]|length %}{{ count }}
 #define __GLOBAL_U32_ID_START {{ count }}
 #define __GLOBAL_U32_ID_END {% set count = count + variableTypes["u32"]|length %}{{ count }}
+#define __GLOBAL_FP32_ID_START {{ count }}
+#define __GLOBAL_FP32_ID_END {% set count = count + variableTypes["fp32"]|length %}{{ count }}
 #define __GLOBAL_F32_ID_START {{ count }}
 #define __GLOBAL_F32_ID_END {% set count = count + variableTypes["f32"]|length %}{{ count }}
 #define __GLOBAL_I16_ID_START {{ count }}
@@ -100,8 +117,6 @@ typedef enum {
 #define __GLOBAL_U8_ID_END {% set count = count + variableTypes["u8"]|length %}{{ count }}
 #define __GLOBAL_BOOL_ID_START {{ count }}
 #define __GLOBAL_BOOL_ID_END {% set count = count + variableTypes["bool"]|length %}{{ count }}
-#define __GLOBAL_BOOL_PACKED_ID_START {{ count }}
-#define __GLOBAL_BOOL_PACKED_ID_END {% set count = count + variableTypes["bool-packed"]|length %}{{ count }}
 #define __GLOBAL_ID_END {{ count }}
 {% for variableType in variableTypes %}
 {%- if variableTypes[variableType]|length %}

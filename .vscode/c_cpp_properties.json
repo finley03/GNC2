@@ -4,7 +4,8 @@
             "${workspaceFolder}\\lib\\CMSIS_5\\CMSIS\\Core\\Include\\**",
             "${workspaceFolder}\\toolchain\\arm-none-eabi-gcc\\arm-none-eabi\\include\\**",
             "${workspaceFolder}\\source",
-            "C:\\Users\\${env:USERNAME}\\GNC2\\software\\GNClink\\source"
+            "C:\\Users\\${env:USERNAME}\\GNC2\\software\\GNClink\\source",
+            "C:\\Users\\${env:USERNAME}\\GNC2\\software\\FixedPoint\\include\\**"
         ],
         "commonCompilerPath": "${workspaceFolder}\\toolchain\\arm-none-eabi-gcc\\bin\\arm-none-eabi-gcc.exe"
     },

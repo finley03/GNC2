@@ -1,6 +1,6 @@
 {
     "i64": [
-
+        
     ],
     "u64": [
 
@@ -9,19 +9,6 @@
         
     ],
     "i32": [
-        
-    ],
-    "u32": [
-        {
-            "verbose_name": "EEPROM Layout Hash",
-            "name": "GlobalHash"
-        },
-        {
-            "verbose_name": "Power Cycles",
-            "name": "StartupCount"
-        }
-    ],
-    "f32": [
         {
             "verbose_name": "Raw X Direction Acceleration",
             "name": "AccelerationXRaw"
@@ -43,7 +30,7 @@
             "name": "AngularVelocityYRaw"
         },
         {
-            "verbose_name": "Raw X Axis Angular Velocity",
+            "verbose_name": "Raw Z Axis Angular Velocity",
             "name": "AngularVelocityZRaw"
         },
         {
@@ -67,9 +54,25 @@
             "name": "AngularVelocityYCalibrated"
         },
         {
-            "verbose_name": "Calibrated X Axis Angular Velocity",
+            "verbose_name": "Calibrated Z Axis Angular Velocity",
             "name": "AngularVelocityZCalibrated"
         }
+    ],
+    "u32": [
+        {
+            "verbose_name": "EEPROM Layout Hash",
+            "name": "GlobalHash"
+        },
+        {
+            "verbose_name": "Power Cycles",
+            "name": "StartupCount"
+        }
+    ],
+    "fp32": [
+        
+    ],
+    "f32": [
+
     ],
     "i16": [
 
@@ -85,15 +88,16 @@
     ],
     "bool": [
         {
-            "verbose_name": "Enable Buzzer",
-            "name": "EnableBuzzer"
+            "verbose_name": "Disable Buzzer",
+            "name": "DisableBuzzer"
+        },
+        {
+            "verbose_name": "Disable LED",
+            "name": "DisableLED"
         },
         {
             "verbose_name": "Clean Shutdown",
             "name": "CleanShutdown"
         }
-    ],
-    "bool_packed": [
-        
     ]
 }

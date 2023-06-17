@@ -21,5 +21,7 @@ bool set_global(Global_Variable_IDs id, void* value);
 bool get_global(Global_Variable_IDs id, void* value);
 bool load_global(Global_Variable_IDs id);
 bool save_global(Global_Variable_IDs id);
+bool get_global_name(Global_Variable_IDs id, uint8_t* buffer, int* length, int maxLength);
+bool get_global_type_from_id(Global_Variable_IDs id, __Global_Variable_Types* type);
 
 #endif

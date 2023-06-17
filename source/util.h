@@ -12,6 +12,7 @@
 #include "RTOSDrivers/bus_manager.h"
 
 #include "globals.h"
+#include "fixedpoint.h"
 
 // include hardware definition
 #ifndef HARDWARE_H
@@ -30,7 +31,8 @@
 #define UMIN_3(a, b, c) MIN_3(ABS(a), ABS(b), ABS(c))
 #define ARRLEN(a) (sizeof(a)/sizeof(a[0]))
 #define STRLEN(a) (ARRLEN(a)-1)
-#define __G__ 9.80665f
+// #define __G__ 9.80665f
+#define __G__ 9806650 // um/s^2
 
 #define USB_STACK_BASE USER_STACK_BASE
 #define BUZZER_STACK_BASE (USB_STACK_BASE+USB_STACK_SIZE)

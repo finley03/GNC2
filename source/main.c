@@ -11,8 +11,9 @@
 #include "navigation.h"
 #include "comms.h"
 
+#include "fixedpoint.h"
+
 Process bz;
-int bz_count;
 
 bool init();
 void shutdown();
@@ -27,7 +28,6 @@ int main(void) {
 	if (!init()) SOS();
 	
 	init_process(&bz, buzzer, BUZZER_STACK_BASE, BUZZER_STACK_SIZE);
-	bz_count = 2;
 	dispatch_process(&bz);
 
 	start_navigation();
@@ -43,6 +43,10 @@ int main(void) {
 
 	// serial_write_start(PORT0, frame, GNCLINK_FRAME_TOTAL_LENGTH);
 	// serial_write_wait_until_complete(PORT0);
+
+	volatile fp32_t testvalue1 = FP32_FROM_MILLI(10);
+	volatile fp32_t testvalue2 = FP32_FROM_INT(14);
+	testvalue1 = fp_multiply(testvalue1, testvalue2);
 
 	comms_loop();
 
@@ -144,7 +148,7 @@ void buzzer() {
 	
 	port_wrconfig(PORT_PORTB, PORT_PMUX_E, PORT_PB23);
 	
-	for (int i = 0; i < bz_count; ++i) {
+	for (int i = 0; i < 2; ++i) {
 		pwm_set_duty_tc(TC7_REGS, 1, 0.5f);
 		led_on();
 		rtos_delay_ms(75);
@@ -152,4 +156,11 @@ void buzzer() {
 		led_off();
 		rtos_delay_ms(75);
 	}
+
+	// while (1) {
+	// 	led_on();
+	// 	rtos_delay_ms(200);
+	// 	led_off();
+	// 	rtos_delay_ms(200);
+	// }
 }

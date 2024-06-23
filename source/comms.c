@@ -165,7 +165,7 @@ bool get_packet() {
                 GNClink_Construct_RequestResendFrame(txframe);
 
                 // send frame
-                led_on();
+                led_on(); // only flash if resend is being performed
                 serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
                 serial_write_wait_until_complete(PORT0);
                 led_off();
@@ -196,7 +196,7 @@ bool send_packet(bool resendFrames) {
         GNClink_Get_Frame(txpacket, txframe, frameFlags, frameIndex, &moreFrames);
 
         // send frame
-        led_on();
+        if (resendFrames) led_on(); // only flash LED if resend is being performed
         serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
         serial_write_wait_until_complete(PORT0);
         led_off();

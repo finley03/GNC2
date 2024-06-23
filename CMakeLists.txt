@@ -69,8 +69,8 @@ set(GNC2_SOURCE_FILES
     source/RTOSDrivers/rtos_uart.c
     source/RTOSDrivers/rtos_usb.c
 
-    C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source/gnclink.c
-    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include/source/fixedpoint.c
+    C:/Users/$ENV{USERNAME}/OneDrive/Documents/GNC2/software/GNClink/source/gnclink.c
+    C:/Users/$ENV{USERNAME}/OneDrive/Documents/GNC2/software/FixedPoint/include/source/fixedpoint.c
 )
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
@@ -95,9 +95,9 @@ target_include_directories(${EXECUTABLE} PRIVATE
     lib/SAMD21_DFP/samd21d/include
     lib/SAMD21_DFP/samd21d/include/component
     lib/SAMD21_DFP/samd21d/include/instance
-    C:/Users/$ENV{USERNAME}/GNC2/software/GNClink/source
-    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include
-    C:/Users/$ENV{USERNAME}/GNC2/software/FixedPoint/include/source
+    C:/Users/$ENV{USERNAME}/OneDrive/Documents/GNC2/software/GNClink/source
+    C:/Users/$ENV{USERNAME}/OneDrive/Documents/GNC2/software/FixedPoint/include
+    C:/Users/$ENV{USERNAME}/OneDrive/Documents/GNC2/software/FixedPoint/include/source
 )
 
 target_compile_options(${EXECUTABLE} PRIVATE

@@ -42,3 +42,9 @@ bool rtos_uart_start_read_buffer(sercom_registers_t* sercom, DMA_Descriptor* dma
 void rtos_uart_wait_until_read_complete(DMA_Descriptor* dmadesc) {
     rtos_dma_wait_until_end(dmadesc->rxchannel);
 }
+
+void rtos_uart_wait_until_read_complete_or_timeout(DMA_Descriptor* dmadesc, uint32_t timeout_ticks) {
+    rtos_dma_wait_until_end_or_timeout(dmadesc->rxchannel, timeout_ticks);
+
+    dma_enable_channel(dmadesc->rxchannel);
+}

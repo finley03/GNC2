@@ -325,3 +325,19 @@ void wait_until_callback(void* variable, uint32_t value, uint32_t mask, Process_
 	
 	yield_process(Process_State_Blocked);
 }
+
+void wait_until_callback_preserve_deadline(void* variable, uint32_t value, uint32_t mask, Process_Wait_Until_Condition condition, void (*callback)(void)) {
+	// create structure to define when process resumes execution
+	volatile Process_Wait_Until_Data data = {
+		.variable = variable,
+		.value = value,
+		.mask = mask,
+		.condition = condition,
+		.callback = callback
+	};
+	
+	// make internal data pointer point to structure
+	current_process->internal_data = &data;
+	
+	yield_process(Process_State_Blocked);
+}

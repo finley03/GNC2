@@ -6,6 +6,7 @@
 #include PORT_DRIVER
 
 #include <string.h>
+#include <stdlib.h>
 
 uint8_t rxpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 uint8_t txpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
@@ -123,6 +124,10 @@ bool evaluatePacket() {
 
 // returns false if resend is being requested
 bool get_packet() {
+    // set previous received packets to zero to avoid any propagation
+    memset(rxpacket, 0, sizeof(rxpacket));
+    memset(rxframe, 0, sizeof(rxframe));
+
     bool receivedFrames[GNCLINK_MAX_FRAMES_PER_PACKET];
     for (int i = 0; i < GNCLINK_MAX_FRAMES_PER_PACKET; ++i) receivedFrames[i] = false;
 
@@ -131,7 +136,7 @@ bool get_packet() {
         // receive data
         serial_read_start(PORT0, rxframe, GNCLINK_FRAME_TOTAL_LENGTH);
         // wait until data arrives
-        serial_read_wait_until_complete(PORT0);
+        serial_read_wait_until_complete(PORT0); // Consider using _or_timeout in the future
 
         // check frame
         if (!GNClink_Check_Frame(rxframe)) {
@@ -194,6 +199,8 @@ bool send_packet(bool resendFrames) {
 
         // send frames
         GNClink_Get_Frame(txpacket, txframe, frameFlags, frameIndex, &moreFrames);
+
+        
 
         // send frame
         if (resendFrames) led_on(); // only flash LED if resend is being performed

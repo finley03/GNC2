@@ -124,3 +124,25 @@ int rtos_usb_wait_until_read_complete() {
 	wait_until_false(&usb_read_status);
 	return usb_read_bytes_read;
 }
+
+// void rtos_usb_wait_until_read_complete_or_timeout_callback() {
+// 	// Check whether timeout has occured
+// 	volatile uint32_t time = time_read_ticks();
+// 	int t = (int)(current_process->return_deadline - time);
+// 	static volatile int min = INT32_MAX;
+// 	min = (t < min) ? t : min;
+// 	if (t <= 0) current_process->status = Process_State_Running;
+// }
+
+// int rtos_usb_wait_until_read_complete_or_timeout(uint32_t timeout_ticks) {
+// 	// set return deadline for process
+// 	current_process->return_deadline = time_read_ticks() + timeout_ticks;
+
+// 	// wait_until_false(&usb_read_status);
+// 	wait_until_callback_preserve_deadline(&usb_read_status, false, BOOL_MASK, Process_Wait_Until_Equal, rtos_usb_wait_until_read_complete_or_timeout_callback);
+
+// 	usb_read_status = false;
+// 	usb_serial_read_reset();
+
+// 	return usb_read_bytes_read;
+// }

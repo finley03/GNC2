@@ -183,6 +183,36 @@ bool serial_read_wait_until_complete(Serial_Port_IDs port) {
     return true;
 }
 
+bool serial_read_wait_until_complete_or_timeout(Serial_Port_IDs port, uint32_t timeout_ms) {
+    switch (port) {
+        case PORT0:
+        rtos_usb_wait_until_read_complete(); // USB doesn't time out
+        break;
+
+        case PORT1:
+        rtos_uart_wait_until_read_complete_or_timeout(&uart1_descriptor, timeout_ms * time_ticks_ms_mult);
+        break;
+
+        case PORT2:
+        rtos_uart_wait_until_read_complete_or_timeout(&uart2_descriptor, timeout_ms * time_ticks_ms_mult);
+        break;
+        
+        case PORT3:
+        rtos_uart_wait_until_read_complete_or_timeout(&uart3_descriptor, timeout_ms * time_ticks_ms_mult);
+        break;
+
+        case PORT4:
+        rtos_uart_wait_until_read_complete_or_timeout(&uart4_descriptor, timeout_ms * time_ticks_ms_mult);
+        break;
+
+        default:
+        return false;
+        break;
+    }
+
+    return true;
+}
+
 bool serial_flush(Serial_Port_IDs port) {
     switch (port) {
         case PORT0:

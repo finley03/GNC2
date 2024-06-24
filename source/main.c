@@ -28,25 +28,19 @@ int main(void) {
 	if (!init()) SOS();
 	
 	init_process(&bz, buzzer, BUZZER_STACK_BASE, BUZZER_STACK_SIZE);
-	dispatch_process(&bz);
+	// dispatch_process(&bz);
 
 	start_navigation();
-
-	// uint8_t* payload = GNClink_Get_Payload_Pointer(packet);
-	// const char* test = "Hello";
-	// memcpy(payload, test, 5);
-	// GNClink_Construct_Packet(packet, GNClink_PacketType_Acknowledge, GNClink_PacketFlags_NoResponse, 5);
-	// bool moreFrames;
-	// GNClink_Get_Frame(packet, frame, GNClink_FrameFlags_NoResponse, 0, &moreFrames);
-
-	// rtos_delay_s(5);
-
-	// serial_write_start(PORT0, frame, GNCLINK_FRAME_TOTAL_LENGTH);
-	// serial_write_wait_until_complete(PORT0);
 
 	volatile fp32_t testvalue1 = FP32_FROM_MILLI(10);
 	volatile fp32_t testvalue2 = FP32_FROM_INT(14);
 	testvalue1 = fp_multiply(testvalue1, testvalue2);
+
+	// uint8_t testbuffer[4];
+	// led_on();
+	// serial_read_start(PORT0, testbuffer, sizeof(testbuffer));
+	// serial_read_wait_until_complete_or_timeout(PORT0, 2000);
+	// led_off();
 
 	comms_loop();
 

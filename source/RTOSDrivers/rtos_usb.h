@@ -17,5 +17,7 @@ int rtos_usb_wait_until_send_complete();
 void rtos_usb_start_read_buffer(uint8_t* buffer, int count);
 // waits until the read operation is complete, returns the number of bytes received
 int rtos_usb_wait_until_read_complete();
+// // waits until the read operation is complete or times out, returns the number of bytes received
+// int rtos_usb_wait_until_read_complete_or_timeout(uint32_t timeout_ticks);
 
 #endif

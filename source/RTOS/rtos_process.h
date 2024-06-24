@@ -128,11 +128,19 @@ bool dispatch_process(Process* process);
 // Thread safety: thread safe for any process
 void wait_until(void* variable, uint32_t value, uint32_t mask, Process_Wait_Until_Condition condition);
 
-//----------wait_until : function----------//
+//----------wait_until_callback : function----------//
 // Function: block the current thread until the given condition is met.
 // Before the condition is checked, the callback function is run.
 // Thread safety: thread safe for any process
 void wait_until_callback(void* variable, uint32_t value, uint32_t mask, Process_Wait_Until_Condition condition, void (*callback)(void));
+
+//----------wait_until_callback_preserve_deadline : function----------//
+// Function: block the current thread until the given condition is met.
+// Before the condition is checked, the callback function is run.
+// Unlike wait_until_callback, this function forgoes the default behavior
+// of setting the deadline to now.
+// Thread safety: thread safe for any process
+void wait_until_callback_preserve_deadline(void* variable, uint32_t value, uint32_t mask, Process_Wait_Until_Condition condition, void (*callback)(void));
 
 //----------join_process : macro----------//
 // Function: Shorthand for the function wait_until.

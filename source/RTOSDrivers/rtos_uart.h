@@ -16,5 +16,7 @@ void rtos_uart_wait_until_send_complete(DMA_Descriptor* dmadesc);
 bool rtos_uart_start_read_buffer(sercom_registers_t* sercom, DMA_Descriptor* dmadesc, uint8_t* buffer, int count);
 // waits until the read operation is complete, returns the number of bytes received
 void rtos_uart_wait_until_read_complete(DMA_Descriptor* dmadesc);
+// waits until the read operation is complete or times out, returns the number of bytes received
+void rtos_uart_wait_until_read_complete_or_timeout(DMA_Descriptor* dmadesc, uint32_t timeout_ticks);
 
 #endif

@@ -121,7 +121,7 @@ typedef enum {
 #define UART1_BAUD 9600
 #define UART2_BAUD 9600
 #define UART3_BAUD 9600
-#define UART4_BAUD 9600
+#define UART4_BAUD 4800
 
 #define SPI_EEPROM_SIZE 0x8000
 #define SPI_FLASH_SIZE 0x400000

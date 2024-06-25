@@ -56,6 +56,10 @@
         {
             "verbose_name": "Calibrated Z Axis Angular Velocity",
             "name": "AngularVelocityZCalibrated"
+        },
+        {
+            "verbose_name": "Debug Int 1",
+            "name": "DebugInt1"
         }
     ],
     "u32": [
@@ -98,6 +102,14 @@
         {
             "verbose_name": "Clean Shutdown",
             "name": "CleanShutdown"
+        },
+        {
+            "verbose_name": "Debug Bool 1",
+            "name": "DebugBool1"
+        },
+        {
+            "verbose_name": "Debug Bool 2",
+            "name": "DebugBool2"
         }
     ]
 }

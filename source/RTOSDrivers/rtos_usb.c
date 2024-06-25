@@ -86,6 +86,55 @@ void USB_Handler() {
 	usb_interrupt = true;
 }
 
+
+// void rtos_usb_init(uint32_t stack_base, uint32_t stack_size) {
+// 	NVIC_DisableIRQ(USB_IRQn);
+
+// 	port_wrconfig(PORT_PORTA, PORT_PMUX_G, PORT_PA24 | PORT_PA25);
+// 	usb_init();
+// 	usb_attach();
+
+// 	// init_process(&usbproc, usb_proc_loop, stack_base, stack_size);
+// 	// dispatch_process(&usbproc);
+// 	// wait_until_started(&usbproc);
+
+
+
+// 	usb_interrupt = false;
+// 	usb_quit = false;
+// 	usb_send_status = false;
+// 	usb_read_status = false;
+
+// 	NVIC_EnableIRQ(USB_IRQn);
+// }
+
+
+// void usb_func() {
+// 	usb_handle_function();
+
+// 	// if send operation is in progress and new data must be sent
+// 	if (usb_send_status && !usb_tx_busy) {
+// 		int bytes_left = usb_send_buffer_count - usb_send_bytes_sent;
+// 		if (bytes_left == 0) usb_send_status = false;
+// 		else usb_send_bytes_sent += usb_serial_send_buffer(usb_send_buffer + usb_send_bytes_sent, bytes_left);
+// 	}
+
+// 	// if read operation is in progress and data is ready to be read out
+// 	if (usb_read_status && usb_rx_buffer_length != 0) {
+// 		usb_read_bytes_read += usb_serial_read_buffer(usb_read_buffer + usb_read_bytes_read, usb_rx_buffer_length);
+// 		int bytes_left = usb_read_buffer_count - usb_read_bytes_read;
+// 		if (bytes_left == 0) usb_read_status = false;
+// 	}
+// }
+
+// void USB_Handler() {
+// 	NVIC_DisableIRQ(USB_IRQn);
+	
+// 	usb_interrupt = true;
+
+// 	usb_func();
+// }
+
 void rtos_usb_quit() {
 	usb_detach();
 	usb_interrupt = true;

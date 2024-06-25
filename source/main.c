@@ -28,7 +28,7 @@ int main(void) {
 	if (!init()) SOS();
 	
 	init_process(&bz, buzzer, BUZZER_STACK_BASE, BUZZER_STACK_SIZE);
-	// dispatch_process(&bz);
+	dispatch_process(&bz);
 
 	start_navigation();
 
@@ -41,6 +41,8 @@ int main(void) {
 	// serial_read_start(PORT0, testbuffer, sizeof(testbuffer));
 	// serial_read_wait_until_complete_or_timeout(PORT0, 2000);
 	// led_off();
+
+	globals.DebugBool1 = false;
 
 	comms_loop();
 
@@ -126,6 +128,12 @@ bool init() {
 	busmanager_new_process(&spiproc, SPIMGR_STACK_BASE, SPIMGR_STACK_SIZE, SPI_SERCOM, &dma_spi_desc);
 	
 	init_globals();
+
+#ifdef COMMS_TEST
+	uint32_t seed; // get seed from startup count
+	get_global(Global_ID_StartupCount, &seed);
+	srand(seed);
+#endif
 	
 	return selftest();
 }

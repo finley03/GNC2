@@ -38,17 +38,20 @@ typedef struct __attribute__((packed, aligned(8))) {
     int32_t AngularVelocityXCalibrated; // Calibrated X Axis Angular Velocity
     int32_t AngularVelocityYCalibrated; // Calibrated Y Axis Angular Velocity
     int32_t AngularVelocityZCalibrated; // Calibrated Z Axis Angular Velocity
+    int32_t DebugInt1; // Debug Int 1
     uint32_t GlobalHash; // EEPROM Layout Hash
     uint32_t StartupCount; // Power Cycles
     bool DisableBuzzer; // Disable Buzzer
     bool DisableLED; // Disable LED
     bool CleanShutdown; // Clean Shutdown
+    bool DebugBool1; // Debug Bool 1
+    bool DebugBool2; // Debug Bool 2
 } Global_Variables;
 
 #define __GLOBAL_I64_COUNT 0
 #define __GLOBAL_U64_COUNT 0
 #define __GLOBAL_F64_COUNT 0
-#define __GLOBAL_I32_COUNT 12
+#define __GLOBAL_I32_COUNT 13
 #define __GLOBAL_U32_COUNT 2
 #define __GLOBAL_FP32_COUNT 0
 #define __GLOBAL_F32_COUNT 0
@@ -56,7 +59,7 @@ typedef struct __attribute__((packed, aligned(8))) {
 #define __GLOBAL_U16_COUNT 0
 #define __GLOBAL_I8_COUNT 0
 #define __GLOBAL_U8_COUNT 0
-#define __GLOBAL_BOOL_COUNT 3
+#define __GLOBAL_BOOL_COUNT 5
 
 typedef enum {
     Global_ID_INVALID,
@@ -72,11 +75,14 @@ typedef enum {
     Global_ID_AngularVelocityXCalibrated,
     Global_ID_AngularVelocityYCalibrated,
     Global_ID_AngularVelocityZCalibrated,
+    Global_ID_DebugInt1,
     Global_ID_GlobalHash,
     Global_ID_StartupCount,
     Global_ID_DisableBuzzer,
     Global_ID_DisableLED,
     Global_ID_CleanShutdown,
+    Global_ID_DebugBool1,
+    Global_ID_DebugBool2,
 } Global_Variable_IDs;
 
 #define __GLOBAL_VARIABLE_NAMES {\
@@ -93,11 +99,14 @@ typedef enum {
     "Calibrated X Axis Angular Velocity",\
     "Calibrated Y Axis Angular Velocity",\
     "Calibrated Z Axis Angular Velocity",\
+    "Debug Int 1",\
     "EEPROM Layout Hash",\
     "Power Cycles",\
     "Disable Buzzer",\
     "Disable LED",\
     "Clean Shutdown",\
+    "Debug Bool 1",\
+    "Debug Bool 2",\
 };
 
 #define __GLOBAL_ID_START 1
@@ -108,24 +117,24 @@ typedef enum {
 #define __GLOBAL_F64_ID_START 1
 #define __GLOBAL_F64_ID_END 1
 #define __GLOBAL_I32_ID_START 1
-#define __GLOBAL_I32_ID_END 13
-#define __GLOBAL_U32_ID_START 13
-#define __GLOBAL_U32_ID_END 15
-#define __GLOBAL_FP32_ID_START 15
-#define __GLOBAL_FP32_ID_END 15
-#define __GLOBAL_F32_ID_START 15
-#define __GLOBAL_F32_ID_END 15
-#define __GLOBAL_I16_ID_START 15
-#define __GLOBAL_I16_ID_END 15
-#define __GLOBAL_U16_ID_START 15
-#define __GLOBAL_U16_ID_END 15
-#define __GLOBAL_I8_ID_START 15
-#define __GLOBAL_I8_ID_END 15
-#define __GLOBAL_U8_ID_START 15
-#define __GLOBAL_U8_ID_END 15
-#define __GLOBAL_BOOL_ID_START 15
-#define __GLOBAL_BOOL_ID_END 18
-#define __GLOBAL_ID_END 18
+#define __GLOBAL_I32_ID_END 14
+#define __GLOBAL_U32_ID_START 14
+#define __GLOBAL_U32_ID_END 16
+#define __GLOBAL_FP32_ID_START 16
+#define __GLOBAL_FP32_ID_END 16
+#define __GLOBAL_F32_ID_START 16
+#define __GLOBAL_F32_ID_END 16
+#define __GLOBAL_I16_ID_START 16
+#define __GLOBAL_I16_ID_END 16
+#define __GLOBAL_U16_ID_START 16
+#define __GLOBAL_U16_ID_END 16
+#define __GLOBAL_I8_ID_START 16
+#define __GLOBAL_I8_ID_END 16
+#define __GLOBAL_U8_ID_START 16
+#define __GLOBAL_U8_ID_END 16
+#define __GLOBAL_BOOL_ID_START 16
+#define __GLOBAL_BOOL_ID_END 21
+#define __GLOBAL_ID_END 21
 
 #define __GLOBAL_I32_START_VARIABLE AccelerationXRaw
 #define __GLOBAL_U32_START_VARIABLE GlobalHash
@@ -133,6 +142,6 @@ typedef enum {
 
 // CRC32 of the source JSON used to create this file
 // Used to identify when the globals structure changes
-#define __GLOBAL_HASH 0x9fc0b1d3
+#define __GLOBAL_HASH 0x6a8dc07e
 
 #endif

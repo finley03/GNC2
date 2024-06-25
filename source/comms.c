@@ -6,7 +6,6 @@
 #include PORT_DRIVER
 
 #include <string.h>
-#include <stdlib.h>
 
 uint8_t rxpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 uint8_t txpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
@@ -54,9 +53,45 @@ bool getValueList() {
         payloadIndex += size;
     }
 
-    // construct packet
+    // construct response packet
     if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_GetValueList, GNClink_PacketFlags_Response, payloadIndex)) return false;
     return true;
+}
+
+bool setValueList() {
+    volatile uint8_t* rxpayload = GNClink_Get_Packet_Payload_Pointer(rxpacket); // no idea why this needs to be volatile???
+    uint8_t* txpayload = GNClink_Get_Packet_Payload_Pointer(txpacket);
+
+    // get number of IDs in list
+    int IDCount = (int)*rxpayload;
+
+    int payloadIndex = 1;
+    for (int index = 0; index < IDCount; ++index) {
+        Global_Variable_IDs ID = (Global_Variable_IDs)*((uint16_t*)(rxpayload + payloadIndex));
+        void* address;
+        int size;
+        if (!get_global_address_size(ID, &address, &size)) {
+            // invalid ID, do something...
+            return false;
+        }
+
+        if (payloadIndex + size + 2 > GNCLINK_PACKET_MAX_PAYLOAD_LENGTH) {
+            // Buffer overrun, do something...
+            return false;
+        }
+
+        // copy value from payload to globals
+        memcpy(address, &rxpayload[payloadIndex + 2], size);
+        payloadIndex += size + 2;
+    }
+
+    // construct empty response packet
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_SetValueList, GNClink_PacketFlags_Response, 0)) return false;
+    return true;
+}
+
+bool loadValueList() {
+    
 }
 
 bool getValueCount() {
@@ -88,8 +123,9 @@ bool getValueName() {
 bool evaluatePacket() {
     // check packet
     if (!GNClink_Check_Packet(rxpacket)) {
-        // do something
         SOS();
+        // do something
+        return false;
     }
 
     // // run buzzer
@@ -108,6 +144,9 @@ bool evaluatePacket() {
 
         case GNClink_PacketType_GetValueList:
         return getValueList();
+
+        case GNClink_PacketType_SetValueList:
+        return setValueList();
 
         case GNClink_PacketType_GetValueCount:
         return getValueCount();
@@ -170,10 +209,17 @@ bool get_packet() {
                 GNClink_Construct_RequestResendFrame(txframe);
 
                 // send frame
+#ifdef COMMS_TEST
+                int random_value = rand() % 10;
+                if (random_value != 0) {
+#endif
                 led_on(); // only flash if resend is being performed
                 serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
                 serial_write_wait_until_complete(PORT0);
                 led_off();
+#ifdef COMMS_TEST
+                }
+#endif
             }
             // packet fully received
             else break;
@@ -203,10 +249,17 @@ bool send_packet(bool resendFrames) {
         
 
         // send frame
+#ifdef COMMS_TEST
+        int random_value = rand() % 10;
+        if (random_value != 0) {
+#endif
         if (resendFrames) led_on(); // only flash LED if resend is being performed
         serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
         serial_write_wait_until_complete(PORT0);
         led_off();
+#ifdef COMMS_TEST
+        }
+#endif
 
         ++count;
     }

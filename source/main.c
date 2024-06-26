@@ -42,8 +42,6 @@ int main(void) {
 	// serial_read_wait_until_complete_or_timeout(PORT0, 2000);
 	// led_off();
 
-	globals.DebugBool1 = false;
-
 	comms_loop();
 
 	while (1) {

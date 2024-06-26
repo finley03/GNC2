@@ -44,6 +44,9 @@ typedef struct __attribute__((packed, aligned(8))) {
     bool DisableBuzzer; // Disable Buzzer
     bool DisableLED; // Disable LED
     bool CleanShutdown; // Clean Shutdown
+    bool RunNavProcess; // Run Navigation Process
+    bool RunControlProcess; // Run Control Process
+    bool RunGuidanceProcess; // Run Guidance Process
     bool DebugBool1; // Debug Bool 1
     bool DebugBool2; // Debug Bool 2
 } Global_Variables;
@@ -59,7 +62,7 @@ typedef struct __attribute__((packed, aligned(8))) {
 #define __GLOBAL_U16_COUNT 0
 #define __GLOBAL_I8_COUNT 0
 #define __GLOBAL_U8_COUNT 0
-#define __GLOBAL_BOOL_COUNT 5
+#define __GLOBAL_BOOL_COUNT 8
 
 typedef enum {
     Global_ID_INVALID,
@@ -81,6 +84,9 @@ typedef enum {
     Global_ID_DisableBuzzer,
     Global_ID_DisableLED,
     Global_ID_CleanShutdown,
+    Global_ID_RunNavProcess,
+    Global_ID_RunControlProcess,
+    Global_ID_RunGuidanceProcess,
     Global_ID_DebugBool1,
     Global_ID_DebugBool2,
 } Global_Variable_IDs;
@@ -105,6 +111,9 @@ typedef enum {
     "Disable Buzzer",\
     "Disable LED",\
     "Clean Shutdown",\
+    "Run Navigation Process",\
+    "Run Control Process",\
+    "Run Guidance Process",\
     "Debug Bool 1",\
     "Debug Bool 2",\
 };
@@ -133,8 +142,8 @@ typedef enum {
 #define __GLOBAL_U8_ID_START 16
 #define __GLOBAL_U8_ID_END 16
 #define __GLOBAL_BOOL_ID_START 16
-#define __GLOBAL_BOOL_ID_END 21
-#define __GLOBAL_ID_END 21
+#define __GLOBAL_BOOL_ID_END 24
+#define __GLOBAL_ID_END 24
 
 #define __GLOBAL_I32_START_VARIABLE AccelerationXRaw
 #define __GLOBAL_U32_START_VARIABLE GlobalHash
@@ -142,6 +151,6 @@ typedef enum {
 
 // CRC32 of the source JSON used to create this file
 // Used to identify when the globals structure changes
-#define __GLOBAL_HASH 0x6a8dc07e
+#define __GLOBAL_HASH 0x6f5242bf
 
 #endif

@@ -7,6 +7,9 @@ Process navigation_process;
 
 void navigation() {
 	while (1) {
+		if (!globals.RunNavProcess) {
+			wait_until_true(&globals.RunNavProcess);
+		}
         // led_on();
 		request_imu_data();
 		wait_for_imu_data();

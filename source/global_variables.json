@@ -104,6 +104,18 @@
             "name": "CleanShutdown"
         },
         {
+            "verbose_name": "Run Navigation Process",
+            "name": "RunNavProcess"
+        },
+        {
+            "verbose_name": "Run Control Process",
+            "name": "RunControlProcess"
+        },
+        {
+            "verbose_name": "Run Guidance Process",
+            "name": "RunGuidanceProcess"
+        },
+        {
             "verbose_name": "Debug Bool 1",
             "name": "DebugBool1"
         },

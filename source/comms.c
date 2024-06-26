@@ -91,7 +91,47 @@ bool setValueList() {
 }
 
 bool loadValueList() {
-    
+    volatile uint8_t* rxpayload = GNClink_Get_Packet_Payload_Pointer(rxpacket); // no idea why this needs to be volatile???
+    uint8_t* txpayload = GNClink_Get_Packet_Payload_Pointer(txpacket);
+    uint16_t* idList = (uint16_t*)(rxpayload + 1);
+
+    // get number of IDs in list
+    int IDCount = (int)*rxpayload;
+
+    for (int index = 0; index < IDCount; ++index) {
+        Global_Variable_IDs ID = (Global_Variable_IDs)idList[index];
+
+        if (!load_global(ID)) {
+            // Invalid ID
+            return false;
+        }
+    }
+
+    // construct empty response packet
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_LoadValueList, GNClink_PacketFlags_Response, 0)) return false;
+    return true;
+}
+
+bool saveValueList() {
+    volatile uint8_t* rxpayload = GNClink_Get_Packet_Payload_Pointer(rxpacket); // no idea why this needs to be volatile???
+    uint8_t* txpayload = GNClink_Get_Packet_Payload_Pointer(txpacket);
+    uint16_t* idList = (uint16_t*)(rxpayload + 1);
+
+    // get number of IDs in list
+    int IDCount = (int)*rxpayload;
+
+    for (int index = 0; index < IDCount; ++index) {
+        Global_Variable_IDs ID = (Global_Variable_IDs)idList[index];
+
+        if (!save_global(ID)) {
+            // Invalid ID
+            return false;
+        }
+    }
+
+    // construct empty response packet
+    if (!GNClink_Construct_Packet(txpacket, GNClink_PacketType_SaveValueList, GNClink_PacketFlags_Response, 0)) return false;
+    return true;
 }
 
 bool getValueCount() {
@@ -147,6 +187,12 @@ bool evaluatePacket() {
 
         case GNClink_PacketType_SetValueList:
         return setValueList();
+
+        case GNClink_PacketType_LoadValueList:
+        return loadValueList();
+
+        case GNClink_PacketType_SaveValueList:
+        return saveValueList();
 
         case GNClink_PacketType_GetValueCount:
         return getValueCount();

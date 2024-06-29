@@ -5,6 +5,10 @@
 void rtos_dma_wait_until_end_callback() {
 	// Ensure correct DMAC channel is being checked
 	DMAC_REGS->DMAC_CHID = *((uint8_t*)(current_process->data));
+
+	// // for evaluation
+	// if (DMAC_REGS->DMAC_CHINTFLAG & DMAC_CHINTFLAG_TCMPL(1))
+	// 	current_process->status = Process_State_Running;
 }
 
 void rtos_dma_wait_until_end(int channel) {
@@ -13,6 +17,9 @@ void rtos_dma_wait_until_end(int channel) {
 	current_process->data = &channel;
 	wait_until_callback(&(DMAC_REGS->DMAC_CHINTFLAG), DMAC_CHINTFLAG_TCMPL(1), DMAC_CHINTFLAG_TCMPL(1),
 		Process_Wait_Until_Equal, rtos_dma_wait_until_end_callback);
+	// wait_until_callback(&(DMAC_REGS->DMAC_CHINTFLAG), DMAC_CHINTFLAG_TCMPL(1), DMAC_CHINTFLAG_TCMPL(1),
+	// 	Process_Wait_Until_None, rtos_dma_wait_until_end_callback);
+	// while (!(DMAC_REGS->DMAC_CHINTFLAG & DMAC_CHINTFLAG_TCMPL(1))) DMAC_REGS->DMAC_CHID = channel;
 	current_process->data = data;
 }
 

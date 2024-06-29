@@ -4,6 +4,7 @@
 #define USB_STACK_SIZE 0x100
 #define BUZZER_STACK_SIZE 0x100
 #define SPIMGR_STACK_SIZE 0x200
+#define RC_RECEIVER_STACK_SIZE 0x100
 #define NAVIGATION_STACK_SIZE 0x300
 
 // SERCOM definitions
@@ -119,7 +120,7 @@ typedef enum {
 // value definitions
 #define SPI_BAUD 6000000
 #define UART1_BAUD 9600
-#define UART2_BAUD 9600
+#define UART2_BAUD 420000
 #define UART3_BAUD 9600
 #define UART4_BAUD 4800
 

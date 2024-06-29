@@ -41,12 +41,29 @@ typedef struct __attribute__((packed, aligned(8))) {
     int32_t DebugInt1; // Debug Int 1
     uint32_t GlobalHash; // EEPROM Layout Hash
     uint32_t StartupCount; // Power Cycles
+    uint16_t RCchannel1; // RC Channel 1
+    uint16_t RCchannel2; // RC Channel 2
+    uint16_t RCchannel3; // RC Channel 3
+    uint16_t RCchannel4; // RC Channel 4
+    uint16_t RCchannel5; // RC Channel 5
+    uint16_t RCchannel6; // RC Channel 6
+    uint16_t RCchannel7; // RC Channel 7
+    uint16_t RCchannel8; // RC Channel 8
+    uint16_t RCchannel9; // RC Channel 9
+    uint16_t RCchannel10; // RC Channel 10
+    uint16_t RCchannel11; // RC Channel 11
+    uint16_t RCchannel12; // RC Channel 12
+    uint16_t RCchannel13; // RC Channel 13
+    uint16_t RCchannel14; // RC Channel 14
+    uint16_t RCchannel15; // RC Channel 15
+    uint16_t RCchannel16; // RC Channel 16
     bool DisableBuzzer; // Disable Buzzer
     bool DisableLED; // Disable LED
     bool CleanShutdown; // Clean Shutdown
     bool RunNavProcess; // Run Navigation Process
     bool RunControlProcess; // Run Control Process
     bool RunGuidanceProcess; // Run Guidance Process
+    bool RCRXFailsafe; // RC Receiver failsafe
     bool DebugBool1; // Debug Bool 1
     bool DebugBool2; // Debug Bool 2
 } Global_Variables;
@@ -59,10 +76,10 @@ typedef struct __attribute__((packed, aligned(8))) {
 #define __GLOBAL_FP32_COUNT 0
 #define __GLOBAL_F32_COUNT 0
 #define __GLOBAL_I16_COUNT 0
-#define __GLOBAL_U16_COUNT 0
+#define __GLOBAL_U16_COUNT 16
 #define __GLOBAL_I8_COUNT 0
 #define __GLOBAL_U8_COUNT 0
-#define __GLOBAL_BOOL_COUNT 8
+#define __GLOBAL_BOOL_COUNT 9
 
 typedef enum {
     Global_ID_INVALID,
@@ -81,12 +98,29 @@ typedef enum {
     Global_ID_DebugInt1,
     Global_ID_GlobalHash,
     Global_ID_StartupCount,
+    Global_ID_RCchannel1,
+    Global_ID_RCchannel2,
+    Global_ID_RCchannel3,
+    Global_ID_RCchannel4,
+    Global_ID_RCchannel5,
+    Global_ID_RCchannel6,
+    Global_ID_RCchannel7,
+    Global_ID_RCchannel8,
+    Global_ID_RCchannel9,
+    Global_ID_RCchannel10,
+    Global_ID_RCchannel11,
+    Global_ID_RCchannel12,
+    Global_ID_RCchannel13,
+    Global_ID_RCchannel14,
+    Global_ID_RCchannel15,
+    Global_ID_RCchannel16,
     Global_ID_DisableBuzzer,
     Global_ID_DisableLED,
     Global_ID_CleanShutdown,
     Global_ID_RunNavProcess,
     Global_ID_RunControlProcess,
     Global_ID_RunGuidanceProcess,
+    Global_ID_RCRXFailsafe,
     Global_ID_DebugBool1,
     Global_ID_DebugBool2,
 } Global_Variable_IDs;
@@ -108,12 +142,29 @@ typedef enum {
     "Debug Int 1",\
     "EEPROM Layout Hash",\
     "Power Cycles",\
+    "RC Channel 1",\
+    "RC Channel 2",\
+    "RC Channel 3",\
+    "RC Channel 4",\
+    "RC Channel 5",\
+    "RC Channel 6",\
+    "RC Channel 7",\
+    "RC Channel 8",\
+    "RC Channel 9",\
+    "RC Channel 10",\
+    "RC Channel 11",\
+    "RC Channel 12",\
+    "RC Channel 13",\
+    "RC Channel 14",\
+    "RC Channel 15",\
+    "RC Channel 16",\
     "Disable Buzzer",\
     "Disable LED",\
     "Clean Shutdown",\
     "Run Navigation Process",\
     "Run Control Process",\
     "Run Guidance Process",\
+    "RC Receiver failsafe",\
     "Debug Bool 1",\
     "Debug Bool 2",\
 };
@@ -136,21 +187,22 @@ typedef enum {
 #define __GLOBAL_I16_ID_START 16
 #define __GLOBAL_I16_ID_END 16
 #define __GLOBAL_U16_ID_START 16
-#define __GLOBAL_U16_ID_END 16
-#define __GLOBAL_I8_ID_START 16
-#define __GLOBAL_I8_ID_END 16
-#define __GLOBAL_U8_ID_START 16
-#define __GLOBAL_U8_ID_END 16
-#define __GLOBAL_BOOL_ID_START 16
-#define __GLOBAL_BOOL_ID_END 24
-#define __GLOBAL_ID_END 24
+#define __GLOBAL_U16_ID_END 32
+#define __GLOBAL_I8_ID_START 32
+#define __GLOBAL_I8_ID_END 32
+#define __GLOBAL_U8_ID_START 32
+#define __GLOBAL_U8_ID_END 32
+#define __GLOBAL_BOOL_ID_START 32
+#define __GLOBAL_BOOL_ID_END 41
+#define __GLOBAL_ID_END 41
 
 #define __GLOBAL_I32_START_VARIABLE AccelerationXRaw
 #define __GLOBAL_U32_START_VARIABLE GlobalHash
+#define __GLOBAL_U16_START_VARIABLE RCchannel1
 #define __GLOBAL_BOOL_START_VARIABLE DisableBuzzer
 
 // CRC32 of the source JSON used to create this file
 // Used to identify when the globals structure changes
-#define __GLOBAL_HASH 0x6f5242bf
+#define __GLOBAL_HASH 0x5006f37a
 
 #endif

@@ -35,6 +35,7 @@ set(GNC2_SOURCE_FILES
     source/main.c
     source/navigation.c
     source/util.c
+    source/rc_receiver.c
 
     source/Drivers/baro_ms56.c
     source/Drivers/dma.c

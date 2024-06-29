@@ -82,7 +82,70 @@
 
     ],
     "u16": [
-
+        {
+            "verbose_name": "RC Channel 1",
+            "name": "RCchannel1"
+        },
+        {
+            "verbose_name": "RC Channel 2",
+            "name": "RCchannel2"
+        },
+        {
+            "verbose_name": "RC Channel 3",
+            "name": "RCchannel3"
+        },
+        {
+            "verbose_name": "RC Channel 4",
+            "name": "RCchannel4"
+        },
+        {
+            "verbose_name": "RC Channel 5",
+            "name": "RCchannel5"
+        },
+        {
+            "verbose_name": "RC Channel 6",
+            "name": "RCchannel6"
+        },
+        {
+            "verbose_name": "RC Channel 7",
+            "name": "RCchannel7"
+        },
+        {
+            "verbose_name": "RC Channel 8",
+            "name": "RCchannel8"
+        },
+        {
+            "verbose_name": "RC Channel 9",
+            "name": "RCchannel9"
+        },
+        {
+            "verbose_name": "RC Channel 10",
+            "name": "RCchannel10"
+        },
+        {
+            "verbose_name": "RC Channel 11",
+            "name": "RCchannel11"
+        },
+        {
+            "verbose_name": "RC Channel 12",
+            "name": "RCchannel12"
+        },
+        {
+            "verbose_name": "RC Channel 13",
+            "name": "RCchannel13"
+        },
+        {
+            "verbose_name": "RC Channel 14",
+            "name": "RCchannel14"
+        },
+        {
+            "verbose_name": "RC Channel 15",
+            "name": "RCchannel15"
+        },
+        {
+            "verbose_name": "RC Channel 16",
+            "name": "RCchannel16"
+        }
     ],
     "i8": [
 
@@ -114,6 +177,10 @@
         {
             "verbose_name": "Run Guidance Process",
             "name": "RunGuidanceProcess"
+        },
+        {
+            "verbose_name": "RC Receiver failsafe",
+            "name": "RCRXFailsafe"
         },
         {
             "verbose_name": "Debug Bool 1",

@@ -19,4 +19,7 @@ void rtos_uart_wait_until_read_complete(DMA_Descriptor* dmadesc);
 // waits until the read operation is complete or times out, returns the number of bytes received
 void rtos_uart_wait_until_read_complete_or_timeout(DMA_Descriptor* dmadesc, uint32_t timeout_ticks);
 
+// Starts an infinite looping UART read operation
+bool rtos_uart_start_read_buffer_infinite(sercom_registers_t* sercom, DMA_Descriptor* dmadesc, uint8_t* buffer, int count);
+
 #endif

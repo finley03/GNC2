@@ -2,6 +2,11 @@
 #include "sercom.h"
 #include "time.h"
 
+void (*sercom0_callback)(void);
+void (*sercom1_callback)(void);
+void (*sercom4_callback)(void);
+void (*sercom5_callback)(void);
+
 bool uart_init(sercom_registers_t* sercom, uint8_t rxpo, uint8_t txpo, uint32_t baud) {
     if (!sercom_init(sercom)) return false;
 
@@ -37,6 +42,34 @@ bool uart_set_baud(sercom_registers_t* sercom, uint32_t baud) {
     return true;
 }
 
+bool uart_set_interrupt(sercom_registers_t* sercom, void (*callback)(void)) {
+    if (!sercom_check(sercom)) return false;
+    
+    sercom->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTFLAG_RXC(1);
+
+    switch ((uint32_t)sercom) {
+        case (uint32_t)SERCOM0_REGS:
+        sercom0_callback = callback;
+        NVIC_EnableIRQ(SERCOM0_IRQn);
+        break;
+
+        case (uint32_t)SERCOM1_REGS:
+        sercom1_callback = callback;
+        NVIC_EnableIRQ(SERCOM1_IRQn);
+        break;
+
+        case (uint32_t)SERCOM4_REGS:
+        sercom4_callback = callback;
+        NVIC_EnableIRQ(SERCOM4_IRQn);
+        break;
+
+        case (uint32_t)SERCOM5_REGS:
+        sercom5_callback = callback;
+        NVIC_EnableIRQ(SERCOM5_IRQn);
+        break;
+    }
+}
+
 void uart_flush(sercom_registers_t* sercom) {
     while (sercom->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk) sercom->USART_INT.SERCOM_DATA;
 }
@@ -60,4 +93,24 @@ int uart_read_buffer(sercom_registers_t* sercom, uint8_t* buffer, int count, int
         buffer[i] = (uint8_t)(sercom->USART_INT.SERCOM_DATA);
     }
     return i;
+}
+
+void SERCOM0_Handler() {
+    sercom0_callback();
+    SERCOM0_REGS->USART_INT.SERCOM_INTFLAG = SERCOM0_REGS->USART_INT.SERCOM_INTFLAG;
+}
+
+void SERCOM1_Handler() {
+    sercom1_callback();
+    SERCOM1_REGS->USART_INT.SERCOM_INTFLAG = SERCOM1_REGS->USART_INT.SERCOM_INTFLAG;
+}
+
+void SERCOM4_Handler() {
+    sercom4_callback();
+    SERCOM4_REGS->USART_INT.SERCOM_INTFLAG = SERCOM4_REGS->USART_INT.SERCOM_INTFLAG;
+}
+
+void SERCOM5_Handler() {
+    sercom5_callback();
+    SERCOM5_REGS->USART_INT.SERCOM_INTFLAG = SERCOM5_REGS->USART_INT.SERCOM_INTFLAG;
 }

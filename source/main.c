@@ -10,6 +10,7 @@
 #include "global_eeprom.h"
 #include "navigation.h"
 #include "comms.h"
+#include "rc_receiver.h"
 
 #include "fixedpoint.h"
 
@@ -23,6 +24,19 @@ void buzzer();
 // const char lipsum[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus dapibus nisi, nec erat curae.";
 // uint8_t packet[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 // uint8_t frame[GNCLINK_FRAME_TOTAL_LENGTH];
+
+
+// #include "Drivers/time.h"
+
+// void testcallback() {
+// 	// led_on();
+// 	serial_flush(PORT2);
+// 	++globals.DebugInt1;
+// 	// delay_us(1);
+// 	// led_off();
+// 	// NVIC_DisableIRQ(SERCOM1_IRQn);
+// }
+
 
 int main(void) {
 	if (!init()) SOS();
@@ -41,6 +55,9 @@ int main(void) {
 	// serial_read_start(PORT0, testbuffer, sizeof(testbuffer));
 	// serial_read_wait_until_complete_or_timeout(PORT0, 2000);
 	// led_off();
+
+	// serial_enable_interrupt(PORT2, testcallback);
+
 
 	comms_loop();
 
@@ -132,6 +149,8 @@ bool init() {
 	get_global(Global_ID_StartupCount, &seed);
 	srand(seed);
 #endif
+
+	if (!receiver_init(PORT2)) SOS();
 	
 	return selftest();
 }
@@ -139,6 +158,8 @@ bool init() {
 void shutdown() {
 	serial_quit();
 }
+
+volatile int usb_int_counter = 0;
 
 void buzzer() {
 	if (!pwm_init_tc(TC7_REGS, PWM_PRESCALER_DIV256)) SOS();
@@ -156,6 +177,11 @@ void buzzer() {
 		led_off();
 		rtos_delay_ms(75);
 	}
+
+	// while (1) {
+	// 	rtos_delay_ms(1);
+	// 	globals.DebugInt1 = (int)*testbuffer;
+	// }
 
 	// while (1) {
 	// 	led_on();

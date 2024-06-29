@@ -80,8 +80,12 @@ void usb_proc_loop() {
 	}
 }
 
+// extern int usb_int_counter;
+
 void USB_Handler() {
 	NVIC_DisableIRQ(USB_IRQn);
+
+	// ++usb_int_counter;
 	
 	usb_interrupt = true;
 }

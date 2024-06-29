@@ -61,6 +61,64 @@ bool serial_quit() {
     rtos_usb_quit();
 }
 
+bool serial_set_baud(Serial_Port_IDs port, uint32_t baud) {
+    switch (port) {
+        case PORT0:
+        break;
+
+        case PORT1:
+        uart_set_baud(UART1_SERCOM, baud);
+        break;
+
+        case PORT2:
+        uart_set_baud(UART2_SERCOM, baud);
+        break;
+        
+        case PORT3:
+        uart_set_baud(UART3_SERCOM, baud);
+        break;
+
+        case PORT4:
+        uart_set_baud(UART4_SERCOM, baud);
+        break;
+
+        default:
+        return false;
+        break;
+    }
+
+    return true;
+}
+
+bool serial_enable_interrupt(Serial_Port_IDs port, void (*callback)(void)) {
+        switch (port) {
+        case PORT0:
+        break;
+
+        case PORT1:
+        uart_set_interrupt(UART1_SERCOM, callback);
+        break;
+
+        case PORT2:
+        uart_set_interrupt(UART2_SERCOM, callback);
+        break;
+        
+        case PORT3:
+        uart_set_interrupt(UART3_SERCOM, callback);
+        break;
+
+        case PORT4:
+        uart_set_interrupt(UART4_SERCOM, callback);
+        break;
+
+        default:
+        return false;
+        break;
+    }
+
+    return true;
+}
+
 
 bool serial_write_start(Serial_Port_IDs port, uint8_t* buffer, int count) {
     switch (port) {
@@ -173,6 +231,36 @@ bool serial_read_wait_until_complete(Serial_Port_IDs port) {
 
         case PORT4:
         rtos_uart_wait_until_read_complete(&uart4_descriptor);
+        break;
+
+        default:
+        return false;
+        break;
+    }
+
+    return true;
+}
+
+bool serial_read_start_infinite(Serial_Port_IDs port, uint8_t* buffer, int count) {
+    switch (port) {
+        case PORT0:
+        return false;
+        break;
+
+        case PORT1:
+        rtos_uart_start_read_buffer_infinite(UART1_SERCOM, &uart1_descriptor, buffer, count);
+        break;
+
+        case PORT2:
+        rtos_uart_start_read_buffer_infinite(UART2_SERCOM, &uart2_descriptor, buffer, count);
+        break;
+        
+        case PORT3:
+        rtos_uart_start_read_buffer_infinite(UART3_SERCOM, &uart3_descriptor, buffer, count);
+        break;
+
+        case PORT4:
+        rtos_uart_start_read_buffer_infinite(UART4_SERCOM, &uart4_descriptor, buffer, count);
         break;
 
         default:

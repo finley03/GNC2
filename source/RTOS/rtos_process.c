@@ -14,6 +14,16 @@ Process* current_process;
 //uint32_t process_pc;
 
 
+// // function called that calls the process
+// // initializes system for process running
+// void process_caller() {
+// 	__enable_irq();
+
+// 	// jump to process
+// 	((void (*)(void))(current_process->data + 1))();
+// }
+
+
 void init_process(Process* process, void (*procFunction)(void), uint32_t stack_position, uint32_t stack_size) {
 	process->stack_base = rtos_stack_base - stack_position;
 	process->stack_size = stack_size;
@@ -66,7 +76,7 @@ void switch_process(Process* process) {
 	__set_PSP(process->stack_pointer);
 	USE_PSP();
 	
-	__enable_irq();
+	// __enable_irq();
 	
 	// jump to process
 	((void (*)(void))(process->program_counter + 1))();
@@ -76,7 +86,7 @@ void switch_process(Process* process) {
 	// invalidate all registers
 	DISCARD_REGISTERS;
 	
-	__disable_irq();
+	// __disable_irq();
 	
 	// // restore stack pointer
 	// //USE_MSP();

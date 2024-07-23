@@ -118,8 +118,8 @@ typedef enum {
 #define IMU_BUSEN_PIN PORT_PA21
 
 // value definitions
-#define SPI_BAUD 6000000
-#define UART1_BAUD 9600
+#define SPI_BAUD 2000000
+#define UART1_BAUD 4800
 #define UART2_BAUD 420000
 #define UART3_BAUD 9600
 #define UART4_BAUD 4800

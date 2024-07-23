@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #endif
 
+bool init_comms();
+
 bool comms_loop();
 
 #endif

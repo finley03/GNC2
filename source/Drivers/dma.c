@@ -19,6 +19,9 @@ void dma_init() {
 	// tell DMAC where root descriptors are 
 	DMAC_REGS->DMAC_BASEADDR = (uint32_t)dma_descriptor;
 	DMAC_REGS->DMAC_WRBADDR = (uint32_t)dma_descriptor_writeback;
+
+	// increase ram QOS for DMAC
+	DMAC_REGS->DMAC_QOSCTRL = DMAC_QOSCTRL_DQOS_HIGH | DMAC_QOSCTRL_FQOS_HIGH | DMAC_QOSCTRL_WRBQOS_HIGH;
 	
 	// enable DMAC
 	DMAC_REGS->DMAC_CTRL = DMAC_CTRL_LVLEN0(1) | DMAC_CTRL_LVLEN1(1) |

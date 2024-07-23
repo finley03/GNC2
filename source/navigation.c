@@ -14,7 +14,7 @@ void navigation() {
 		request_imu_data();
 		wait_for_imu_data();
         // led_off();
-		rtos_delay_ms(1);
+		rtos_delay_ms(5);
 	}
 }
 

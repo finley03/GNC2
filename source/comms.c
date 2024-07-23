@@ -7,12 +7,26 @@
 
 #include <string.h>
 
+#define comms_port PORT4
+
 uint8_t rxpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 uint8_t txpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 uint8_t rxframe[GNCLINK_FRAME_TOTAL_LENGTH];
 uint8_t txframe[GNCLINK_FRAME_TOTAL_LENGTH];
 
+uint8_t rxframe_buffer[GNCLINK_FRAME_TOTAL_LENGTH * 2];
+
 extern void SOS();
+
+bool init_comms() {
+    // Start infinite receive buffer only if not usb vcp
+    if (!serial_is_usb_vcp(comms_port)) {
+	    if (!serial_read_start_infinite(comms_port, rxframe_buffer, sizeof(rxframe_buffer))) return false;
+    }
+
+    return true;
+}
+
 
 bool getGlobalHash() {
     uint32_t* payload = (uint32_t*)GNClink_Get_Packet_Payload_Pointer(txpacket);
@@ -163,7 +177,7 @@ bool getValueName() {
 bool evaluatePacket() {
     // check packet
     if (!GNClink_Check_Packet(rxpacket)) {
-        SOS();
+        // SOS();
         // do something
         return false;
     }
@@ -207,6 +221,48 @@ bool evaluatePacket() {
     return false;
 }
 
+bool get_frame() { // false if frame fails
+    // Receive normally if port is VCP
+    if (serial_is_usb_vcp(comms_port)) {
+        // receive data
+        serial_read_start(comms_port, rxframe, GNCLINK_FRAME_TOTAL_LENGTH);
+        // wait until data arrives
+        serial_read_wait_until_complete(comms_port); // Consider using _or_timeout in the future
+
+        // check frame
+        if (!GNClink_Check_Frame(rxframe)) {
+            // continue, frame will be requested again later
+            return false;
+        }
+
+        return true;
+    }
+    // read into infinite buffer if port is hardware serial
+    else {
+        rtos_delay_ms(10);
+
+        for (int i = 0; i < sizeof(rxframe_buffer); ++i) {
+            if (rxframe_buffer[i] == GNCLINK_FRAME_MAGIC) {
+                // memcpy(crsf_cached_buffer, crsf_receive_buffer, sizeof(crsf_cached_buffer));
+                for (int j = 0; j < GNCLINK_FRAME_TOTAL_LENGTH; ++j) {
+                    rxframe[j] = rxframe_buffer[(i + j) % sizeof(rxframe_buffer)];
+                }
+                
+                if (!GNClink_Check_Frame(rxframe)) {
+                    continue;
+                }
+
+                // frame check passed, clear rxframe_buffer to avoid reusing same frame
+                for (int j = 0; j < GNCLINK_FRAME_TOTAL_LENGTH; ++j) {
+                    rxframe_buffer[(i + j) % sizeof(rxframe_buffer)] = 0; // reset read frame to zero
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
 // returns false if resend is being requested
 bool get_packet() {
     // set previous received packets to zero to avoid any propagation
@@ -218,16 +274,21 @@ bool get_packet() {
 
     // construct packet from frames
     while (1) {
-        // receive data
-        serial_read_start(PORT0, rxframe, GNCLINK_FRAME_TOTAL_LENGTH);
-        // wait until data arrives
-        serial_read_wait_until_complete(PORT0); // Consider using _or_timeout in the future
+        // // receive data
+        // serial_read_start(comms_port, rxframe, GNCLINK_FRAME_TOTAL_LENGTH);
+        // // wait until data arrives
+        // serial_read_wait_until_complete(comms_port); // Consider using _or_timeout in the future
+        // // led_on();
+        // // rtos_delay_ms(1);
+        // // led_off();
 
-        // check frame
-        if (!GNClink_Check_Frame(rxframe)) {
-            // continue, frame will be requested again later
-            continue;
-        }
+        // // check frame
+        // if (!GNClink_Check_Frame(rxframe)) {
+        //     // continue, frame will be requested again later
+        //     continue;
+        // }
+
+        while (!get_frame()); // receive frame
 
         // check if frame is requesting resend
         if (GNClink_Frame_RequestResend(rxframe)) {
@@ -260,8 +321,8 @@ bool get_packet() {
                 if (random_value != 0) {
 #endif
                 led_on(); // only flash if resend is being performed
-                serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
-                serial_write_wait_until_complete(PORT0);
+                serial_write_start(comms_port, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
+                serial_write_wait_until_complete(comms_port);
                 led_off();
 #ifdef COMMS_TEST
                 }
@@ -300,8 +361,8 @@ bool send_packet(bool resendFrames) {
         if (random_value != 0) {
 #endif
         if (resendFrames) led_on(); // only flash LED if resend is being performed
-        serial_write_start(PORT0, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
-        serial_write_wait_until_complete(PORT0);
+        serial_write_start(comms_port, txframe, GNCLINK_FRAME_TOTAL_LENGTH);
+        serial_write_wait_until_complete(comms_port);
         led_off();
 #ifdef COMMS_TEST
         }

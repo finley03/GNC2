@@ -47,17 +47,19 @@ bool dma_imu_icm20948_process_request(IMU_ICM20948_Descriptor* imudesc, DMA_Desc
 	
 	// set user bank
 	uint8_t bank = (request->user_bank) << 4;
-	dma_imu_icm20948_write(imudesc, dmadesc, REG_BANK_SEL, 1, &bank);
-	//imu_user_bank(imudesc, request->user_bank);
+	// dma_imu_icm20948_write(imudesc, dmadesc, REG_BANK_SEL, 1, &bank);
+	imu_icm20948_user_bank(imudesc, request->user_bank);
 	
 	// switch request type
 	switch (request->type) {
 		case IMU_Read:
-		dma_imu_icm20948_read(imudesc, dmadesc, request->address, request->count, request->data);
+		// dma_imu_icm20948_read(imudesc, dmadesc, request->address, request->count, request->data);
+		imu_icm20948_read(imudesc, request->address, request->count, request->data);
 		break;
 		
 		case IMU_Write:
-		dma_imu_icm20948_write(imudesc, dmadesc, request->address, request->count, request->data);
+		// dma_imu_icm20948_write(imudesc, dmadesc, request->address, request->count, request->data);
+		imu_icm20948_write(imudesc, request->address, request->count, request->data);
 		break;
 	}
 	

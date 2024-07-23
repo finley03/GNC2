@@ -165,4 +165,8 @@ bool imu_icm20948_check(IMU_ICM20948_Descriptor* desc);
 bool mag_icm20948_init(IMU_ICM20948_Descriptor* desc);
 bool mag_icm20948_check(IMU_ICM20948_Descriptor* desc);
 
+void imu_icm20948_user_bank(IMU_ICM20948_Descriptor* desc, int bank);
+void imu_icm20948_read(IMU_ICM20948_Descriptor* desc, uint8_t address, int count, uint8_t* data);
+void imu_icm20948_write(IMU_ICM20948_Descriptor* desc, uint8_t address, int count, uint8_t* data);
+
 #endif

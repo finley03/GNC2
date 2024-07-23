@@ -100,7 +100,7 @@ void busmanager_process_function() {
 			// data->execute_function(current_request, data->port_descriptor);
 			if (!current_request->request_processor_function)
 				SOS();
-			__disable_irq();
+			// __disable_irq();
 			if (current_request->request_processor_function(current_request->device_descriptor, data->port_descriptor, current_request->request_data, current_request)) {
 				current_request->status = BusManager_Request_Complete;
 

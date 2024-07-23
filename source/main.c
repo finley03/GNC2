@@ -20,23 +20,6 @@ bool init();
 void shutdown();
 void buzzer();
 
-// uint8_t usbbuffer[128];
-// const char lipsum[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus dapibus nisi, nec erat curae.";
-// uint8_t packet[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
-// uint8_t frame[GNCLINK_FRAME_TOTAL_LENGTH];
-
-
-// #include "Drivers/time.h"
-
-// void testcallback() {
-// 	// led_on();
-// 	serial_flush(PORT2);
-// 	++globals.DebugInt1;
-// 	// delay_us(1);
-// 	// led_off();
-// 	// NVIC_DisableIRQ(SERCOM1_IRQn);
-// }
-
 
 int main(void) {
 	if (!init()) SOS();
@@ -50,13 +33,6 @@ int main(void) {
 	volatile fp32_t testvalue2 = FP32_FROM_INT(14);
 	testvalue1 = fp_multiply(testvalue1, testvalue2);
 
-	// uint8_t testbuffer[4];
-	// led_on();
-	// serial_read_start(PORT0, testbuffer, sizeof(testbuffer));
-	// serial_read_wait_until_complete_or_timeout(PORT0, 2000);
-	// led_off();
-
-	// serial_enable_interrupt(PORT2, testcallback);
 
 
 	comms_loop();
@@ -110,13 +86,6 @@ bool init() {
 	if (!serial_init()) SOS();
 	
 	// init imu and magnetometer
-	// {
-	// 	IMU_ON_BUS();
-	// 	Pin imu_ss = {.port = IMU_SS_PORT, .pin = IMU_SS_PIN};
-	// 	if (!imu_icm20948_init(&imu_desc, SPI_SERCOM, imu_ss)) SOS();
-	// 	if (!mag_icm20948_init(&imu_desc)) SOS();
-	// 	IMU_OFF_BUS();
-	// }
 	if (!imu_init()) SOS();
 
 	// init barometer
@@ -126,10 +95,6 @@ bool init() {
 	}
 	
 	// init eeprom
-	// {
-	// 	Pin eeprom_ss = {.port = EEPROM_SS_PORT, .pin = EEPROM_SS_PIN};
-	// 	eeprom_init(&eeprom_desc, SPI_SERCOM, eeprom_ss, SPI_EEPROM_SIZE);
-	// }
 	init_eeprom();
 	
 	// init flash
@@ -139,7 +104,6 @@ bool init() {
 	}
 	
 	// start spi bus manager
-	// busmanager_new_process(&spiproc, SPIMGR_STACK_BASE, SPIMGR_STACK_SIZE, SPI_SERCOM, &dma_spi_desc, spi_process_exec_function);
 	busmanager_new_process(&spiproc, SPIMGR_STACK_BASE, SPIMGR_STACK_SIZE, SPI_SERCOM, &dma_spi_desc);
 	
 	init_globals();
@@ -151,6 +115,8 @@ bool init() {
 #endif
 
 	if (!receiver_init(PORT2)) SOS();
+
+	if (!init_comms()) SOS();
 	
 	return selftest();
 }

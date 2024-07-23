@@ -31,4 +31,6 @@ bool serial_read_start_infinite(Serial_Port_IDs port, uint8_t* buffer, int count
 
 bool serial_flush(Serial_Port_IDs port);
 
+bool serial_is_usb_vcp(Serial_Port_IDs port); // returns if port is USB Virtual Com Port
+
 #endif

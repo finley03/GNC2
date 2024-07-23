@@ -79,11 +79,13 @@ void wait_for_imu_data() {
         ++accel_fs_sel;
         accel_config_1 = 0b00000110 & (uint8_t)(accel_fs_sel << 1);
         imu_icm20948_request(&spiproc, &accel_range_request, &imu_desc, SPI_DEVICE_IMU, IMU_Write, 2, ACCEL_CONFIG, 1, &accel_config_1);
+        imu_icm20948_wait_until_done(&accel_range_request);
     }
     else if (accel_fs_sel != ACCEL_FS_SEL_MIN && accel_max < ACCEL_FS_SEL_LOW_THRESHOLD) {
         --accel_fs_sel;
         accel_config_1 = 0b00000110 & (uint8_t)(accel_fs_sel << 1);
         imu_icm20948_request(&spiproc, &accel_range_request, &imu_desc, SPI_DEVICE_IMU, IMU_Write, 2, ACCEL_CONFIG, 1, &accel_config_1);
+        imu_icm20948_wait_until_done(&accel_range_request);
     }
 
     // adjust gyro range
@@ -92,12 +94,14 @@ void wait_for_imu_data() {
         ++gyro_fs_sel;
         gyro_config_1 = 0b00000110 & (uint8_t)(gyro_fs_sel << 1);
         imu_icm20948_request(&spiproc, &gyro_range_request, &imu_desc, SPI_DEVICE_IMU, IMU_Write, 2, GYRO_CONFIG_1, 1, &gyro_config_1);
+        imu_icm20948_wait_until_done(&gyro_range_request);
         led_on();
     }
     else if (gyro_fs_sel != GYRO_FS_SEL_MIN && gyro_max < GYRO_FS_SEL_LOW_THRESHOLD) {
         --gyro_fs_sel;
         gyro_config_1 = 0b00000110 & (uint8_t)(gyro_fs_sel << 1);
         imu_icm20948_request(&spiproc, &gyro_range_request, &imu_desc, SPI_DEVICE_IMU, IMU_Write, 2, GYRO_CONFIG_1, 1, &gyro_config_1);
+        imu_icm20948_wait_until_done(&gyro_range_request);
         led_off();
     }
 

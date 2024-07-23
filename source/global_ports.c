@@ -329,3 +329,9 @@ bool serial_flush(Serial_Port_IDs port) {
 
     return true;
 }
+
+
+bool serial_is_usb_vcp(Serial_Port_IDs port) {
+    return port == PORT0;
+    // return true;
+}

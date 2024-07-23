@@ -48,6 +48,7 @@ set(GNC2_SOURCE_FILES
     source/Drivers/spi.c
     source/Drivers/time.c
     source/Drivers/uart.c
+    source/Drivers/adc.c
 
     source/Drivers/usb/usb_requests.c
     source/Drivers/usb/usb_samd.c

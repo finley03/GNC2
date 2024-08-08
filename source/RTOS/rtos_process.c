@@ -24,6 +24,12 @@ Process* current_process;
 // }
 
 
+static int calculated_cpu_utilization = 0;
+static int calculated_process_cpu_utilization = 0;
+static uint32_t utilization_tick_counter = 0;
+static uint32_t process_utilization_tick_counter = 0;
+
+
 void init_process(Process* process, void (*procFunction)(void), uint32_t stack_position, uint32_t stack_size) {
 	process->stack_base = rtos_stack_base - stack_position;
 	process->stack_size = stack_size;
@@ -102,11 +108,6 @@ void switch_process(Process* process) {
 	#endif
 	
 	__enable_irq();
-
-	
-	
-	// PORT_REGS->GROUP[DEBUG_LED_PORT].PORT_DIRSET = DEBUG_LED_MASK;
-	// PORT_REGS->GROUP[DEBUG_LED_PORT].PORT_OUTSET = DEBUG_LED_MASK;
 }
 
 
@@ -247,8 +248,37 @@ Process* next_process() {
 	
 	__enable_irq();
 
+	static uint32_t utilization_current_time = 0;
+	static uint32_t utilization_timing_epoch = 0;
+	static bool utilization_timing = false; // true if timing operation is in progress
+
+	if (utilization_timing) {
+		utilization_tick_counter += time_read_ticks() - utilization_current_time;
+		utilization_timing = false;
+	}
+
+	// calculate time if a second has passed
+	if (time_read_ticks() - utilization_timing_epoch >= time_ticks_s_mult) {
+		uint64_t utilization_ticks_100 = (uint64_t)utilization_tick_counter * 100 + time_ticks_ms_mult * 500; // multiply by 100 and add 500 ms to enable rounding
+		uint64_t process_utilization_ticks_100 = (uint64_t)process_utilization_tick_counter * 100 + time_ticks_ms_mult * 500;
+		calculated_cpu_utilization = utilization_ticks_100 / (time_read_ticks() - utilization_timing_epoch);
+		calculated_process_cpu_utilization = process_utilization_ticks_100 / (time_read_ticks() - utilization_timing_epoch);
+		utilization_timing_epoch = time_read_ticks();
+		utilization_timing = false;
+		utilization_tick_counter = 0;
+		process_utilization_tick_counter = 0;
+	}
+
 	// run next unblocked process (if there are unblocked processes)
-	if (run_process) switch_process(current_process);
+	if (run_process) {
+		// record start time to measure CPU utilization
+		utilization_current_time = time_read_ticks();
+		utilization_timing = true;
+
+		switch_process(current_process);
+
+		process_utilization_tick_counter += time_read_ticks() - utilization_current_time;
+	}
 	
 	return current_process;
 }
@@ -350,4 +380,13 @@ void wait_until_callback_preserve_deadline(void* variable, uint32_t value, uint3
 	current_process->internal_data = &data;
 	
 	yield_process(Process_State_Blocked);
+}
+
+
+int get_cpu_utiliztion() {
+	return calculated_cpu_utilization;
+}
+
+int get_process_cpu_utiliztion() {
+	return calculated_process_cpu_utilization;
 }

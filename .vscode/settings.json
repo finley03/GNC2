@@ -57,7 +57,8 @@
         "gnclink.h": "c",
         "rtos_uart.h": "c",
         "gnclink_standard.h": "c",
-        "usb_standard.h": "c"
+        "usb_standard.h": "c",
+        "comms.h": "c"
     },
     "cmake.configureOnOpen": true,
 

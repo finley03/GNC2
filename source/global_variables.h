@@ -57,6 +57,9 @@ typedef struct __attribute__((packed, aligned(8))) {
     uint16_t RCchannel14; // RC Channel 14
     uint16_t RCchannel15; // RC Channel 15
     uint16_t RCchannel16; // RC Channel 16
+    int8_t TotalCpuUtilization; // Total CPU Utilization
+    int8_t ProcessCpuUtilization; // Process CPU Utilization
+    int8_t OSCpuUtilization; // OS CPU Overhead
     bool DisableBuzzer; // Disable Buzzer
     bool DisableLED; // Disable LED
     bool CleanShutdown; // Clean Shutdown
@@ -77,7 +80,7 @@ typedef struct __attribute__((packed, aligned(8))) {
 #define __GLOBAL_F32_COUNT 0
 #define __GLOBAL_I16_COUNT 0
 #define __GLOBAL_U16_COUNT 16
-#define __GLOBAL_I8_COUNT 0
+#define __GLOBAL_I8_COUNT 3
 #define __GLOBAL_U8_COUNT 0
 #define __GLOBAL_BOOL_COUNT 9
 
@@ -114,6 +117,9 @@ typedef enum {
     Global_ID_RCchannel14,
     Global_ID_RCchannel15,
     Global_ID_RCchannel16,
+    Global_ID_TotalCpuUtilization,
+    Global_ID_ProcessCpuUtilization,
+    Global_ID_OSCpuUtilization,
     Global_ID_DisableBuzzer,
     Global_ID_DisableLED,
     Global_ID_CleanShutdown,
@@ -158,6 +164,9 @@ typedef enum {
     "RC Channel 14",\
     "RC Channel 15",\
     "RC Channel 16",\
+    "Total CPU Utilization",\
+    "Process CPU Utilization",\
+    "OS CPU Overhead",\
     "Disable Buzzer",\
     "Disable LED",\
     "Clean Shutdown",\
@@ -189,20 +198,21 @@ typedef enum {
 #define __GLOBAL_U16_ID_START 16
 #define __GLOBAL_U16_ID_END 32
 #define __GLOBAL_I8_ID_START 32
-#define __GLOBAL_I8_ID_END 32
-#define __GLOBAL_U8_ID_START 32
-#define __GLOBAL_U8_ID_END 32
-#define __GLOBAL_BOOL_ID_START 32
-#define __GLOBAL_BOOL_ID_END 41
-#define __GLOBAL_ID_END 41
+#define __GLOBAL_I8_ID_END 35
+#define __GLOBAL_U8_ID_START 35
+#define __GLOBAL_U8_ID_END 35
+#define __GLOBAL_BOOL_ID_START 35
+#define __GLOBAL_BOOL_ID_END 44
+#define __GLOBAL_ID_END 44
 
 #define __GLOBAL_I32_START_VARIABLE AccelerationXRaw
 #define __GLOBAL_U32_START_VARIABLE GlobalHash
 #define __GLOBAL_U16_START_VARIABLE RCchannel1
+#define __GLOBAL_I8_START_VARIABLE TotalCpuUtilization
 #define __GLOBAL_BOOL_START_VARIABLE DisableBuzzer
 
 // CRC32 of the source JSON used to create this file
 // Used to identify when the globals structure changes
-#define __GLOBAL_HASH 0x5006f37a
+#define __GLOBAL_HASH 0x3ad44f4
 
 #endif

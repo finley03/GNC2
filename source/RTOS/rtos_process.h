@@ -179,4 +179,12 @@ void wait_until_callback_preserve_deadline(void* variable, uint32_t value, uint3
 // accurate while the current thread is executing.
 extern Process* current_process;
 
+//----------get_cpu_utilization : function----------//
+// Function: get the calculated cpu utilization as a percent
+int get_cpu_utiliztion();
+
+//----------get_process_cpu_utilization : function----------//
+// Function: get the calculated cpu utilization by processes ignoring OS overhead as a percent
+int get_process_cpu_utiliztion();
+
 #endif

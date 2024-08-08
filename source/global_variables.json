@@ -148,7 +148,18 @@
         }
     ],
     "i8": [
-
+        {
+            "verbose_name": "Total CPU Utilization",
+            "name": "TotalCpuUtilization"
+        },
+        {
+            "verbose_name": "Process CPU Utilization",
+            "name": "ProcessCpuUtilization"
+        },
+        {
+            "verbose_name": "OS CPU Overhead",
+            "name": "OSCpuUtilization"
+        }
     ],
     "u8": [
 

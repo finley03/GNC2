@@ -1,5 +1,4 @@
 #include "util.h"
-#include PORT_DRIVER
 #include "Drivers/pwm.h"
 #include "RTOSDrivers/dma_eeprom_cat25.h"
 #include "RTOSDrivers/dma_baro_ms56.h"
@@ -33,9 +32,13 @@ int main(void) {
 	volatile fp32_t testvalue2 = FP32_FROM_INT(14);
 	testvalue1 = fp_multiply(testvalue1, testvalue2);
 
-
-
-	comms_loop();
+	// run comms loop
+	while (comms_loop()) {
+		// Execute non-critical periodic code here
+		globals.TotalCpuUtilization = (int8_t)get_cpu_utiliztion();
+		globals.ProcessCpuUtilization = (int8_t)get_process_cpu_utiliztion();
+		globals.OSCpuUtilization = globals.TotalCpuUtilization - globals.ProcessCpuUtilization;
+	}
 
 	while (1) {
 		rtos_delay_ms(1);
@@ -116,7 +119,7 @@ bool init() {
 
 	if (!receiver_init(PORT2)) SOS();
 
-	if (!init_comms()) SOS();
+	if (!init_comms(PORT0)) SOS();
 	
 	return selftest();
 }

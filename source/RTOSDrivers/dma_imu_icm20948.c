@@ -53,13 +53,13 @@ bool dma_imu_icm20948_process_request(IMU_ICM20948_Descriptor* imudesc, DMA_Desc
 	// switch request type
 	switch (request->type) {
 		case IMU_Read:
-		// dma_imu_icm20948_read(imudesc, dmadesc, request->address, request->count, request->data);
-		imu_icm20948_read(imudesc, request->address, request->count, request->data);
+		dma_imu_icm20948_read(imudesc, dmadesc, request->address, request->count, request->data);
+		// imu_icm20948_read(imudesc, request->address, request->count, request->data);
 		break;
 		
 		case IMU_Write:
-		// dma_imu_icm20948_write(imudesc, dmadesc, request->address, request->count, request->data);
-		imu_icm20948_write(imudesc, request->address, request->count, request->data);
+		dma_imu_icm20948_write(imudesc, dmadesc, request->address, request->count, request->data);
+		// imu_icm20948_write(imudesc, request->address, request->count, request->data);
 		break;
 	}
 	

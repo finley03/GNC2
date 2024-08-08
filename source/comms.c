@@ -1,13 +1,12 @@
 #include "comms.h"
 #include "gnclink.h"
 #include "globals.h"
-#include "global_ports.h"
 #include "RTOS/rtos.h"
 #include PORT_DRIVER
 
 #include <string.h>
 
-#define comms_port PORT4
+static Serial_Port_IDs comms_port = __PORT_ID_END; // PORT4
 
 uint8_t rxpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
 uint8_t txpacket[GNCLINK_PACKET_MAX_TOTAL_LENGTH];
@@ -18,7 +17,9 @@ uint8_t rxframe_buffer[GNCLINK_FRAME_TOTAL_LENGTH * 2];
 
 extern void SOS();
 
-bool init_comms() {
+bool init_comms(Serial_Port_IDs port) {
+    comms_port = port;
+
     // Start infinite receive buffer only if not usb vcp
     if (!serial_is_usb_vcp(comms_port)) {
 	    if (!serial_read_start_infinite(comms_port, rxframe_buffer, sizeof(rxframe_buffer))) return false;
@@ -373,17 +374,30 @@ bool send_packet(bool resendFrames) {
     return true;
 }
 
-bool comms_loop() {
-    bool run = true;
-    while (run) {
-        // get packet, resend if required
-        while (!get_packet()) {
-            send_packet(true);
-        }
+// bool comms_loop() {
+//     bool run = true;
+//     while (run) {
+//         // get packet, resend if required
+//         while (!get_packet()) {
+//             send_packet(true);
+//         }
 
-        if (evaluatePacket()) {
-            send_packet(false);
-        }
+//         if (evaluatePacket()) {
+//             send_packet(false);
+//         }
+//     }
+
+//     return true;
+// }
+
+bool comms_loop() {
+    // get packet, resend if required
+    while (!get_packet()) {
+        send_packet(true);
+    }
+
+    if (evaluatePacket()) {
+        send_packet(false);
     }
 
     return true;

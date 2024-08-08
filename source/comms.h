@@ -10,7 +10,9 @@
 #include <stdlib.h>
 #endif
 
-bool init_comms();
+#include "global_ports.h"
+
+bool init_comms(Serial_Port_IDs port);
 
 bool comms_loop();
 
